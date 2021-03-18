@@ -27,11 +27,17 @@ export const signInWithGoogle = () => {
   auth.signInWithPopup(provider);
 };
 
-export const uploadFile = async (file, setVideoFileURL, videosRef) => {
+
+export const signOut = () => {
+  auth.signOut();
+}
+
+export const uploadFile = async (file, setVideoFileURL) => {
 
   const storageRef = storage.ref();
   const childPath = "Videos/" + file.name;
   const fileRef = storageRef.child(childPath);
+  const videosRef = firestore.collection("videos");
 
   await fileRef.put(file).then(() => {
     console.log("Uploaded a file");
