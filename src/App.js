@@ -4,9 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
-  auth,
   firestore,
-  signInWithGoogle,
   uploadFile,
   showFile,
   retrieveDownloadUrl,
@@ -19,11 +17,14 @@ import {
   useHistory,
 } from "react-router-dom";
 
+import { AuthProvider } from "./Auth";
+import PrivateRoute from "./PrivateRoute";
+
 import Viewer from "./Dashboard/Panel";
 import LandingPage from "./LandingPage/LandingPage";
 
 function App() {
-  const [user] = useAuthState(auth);
+  // const [user] = useAuthState(auth);
   const videosRef = firestore.collection("videos");
   const [videos] = useCollectionData(videosRef, { idField: "id" });
 
@@ -49,10 +50,13 @@ function App() {
 
   return (
     <div className="App conta">
-      <Switch>
+          <AuthProvider>
+          <Router>
+          <div>
         <Route exact path="/" component={LandingPage} />
-        <Route
-          path="/dashboard"
+       
+        <PrivateRoute
+          exact path="/dashboard"
           component={() => (
             <Viewer
               downloables={downloables}
@@ -62,7 +66,9 @@ function App() {
             />
           )}
         />
-      </Switch>
+          </div>
+     </Router>
+      </AuthProvider>
     </div>
   );
 }

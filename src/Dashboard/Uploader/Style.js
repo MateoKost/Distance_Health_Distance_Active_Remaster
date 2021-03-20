@@ -1,3 +1,5 @@
+import React from "react";
+
 const baseStyle = {
     flex: 1,
     display: 'flex',
@@ -57,5 +59,4 @@ const baseStyle = {
     height: '100%'
   };
   
-
-  export const Style={baseStyle, activeStyle, acceptStyle, rejectStyle, thumbsContainer, thumb, thumbInner, img};
+  export {baseStyle, activeStyle, acceptStyle, rejectStyle, thumbsContainer, thumb, thumbInner, img};

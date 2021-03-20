@@ -18,19 +18,12 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
+export const firebase_auth = firebase.auth;
 export const storage = firebase.storage();
 export const firestore = firebase.firestore();
 export const analytics = firebase.analytics();
 
-export const signInWithGoogle = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider);
-};
 
-
-export const signOut = () => {
-  auth.signOut();
-}
 
 export const uploadFile = async (file, setVideoFileURL) => {
 

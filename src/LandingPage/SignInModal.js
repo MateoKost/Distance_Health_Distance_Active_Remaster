@@ -6,139 +6,67 @@ import '../App.css';
 // import 'bootstrap/dist/css/bootstrap.min.css'
 
 import {
-  auth,
+  auth,firebase_auth,
   firestore,
   signInWithGoogle,
 } from "../base";
 
-class SignInModal extends Component {
-  constructor(props) {
-    super(props);
+import { useCallback, useContext } from "react";
+import { withRouter } from "react-router";
+// import app from "./base.js";
+import { AuthContext } from "../Auth.js";
 
-    
+const SignInModal = (props, { history }) => {
 
-    this.state = {
-      loginData:{
-        email:null,
-        password:null,
-      },
-      login:false,
-      store:null,
 
-      signInModal: props.signInModal,
-      onCancel: props.onCancel,
 
-      authOk:false,
-
-    };
+  const toggleSignInModal = () => {
+    props.onCancel();
   }
 
 
+  // const login = async () => {
+  //   console.log('hihi');
+  
+  // }
 
-  componentDidMount() {
-    this.storeCollector()
-  }
-
-  toggleSignInModal() {
-    this.state.onCancel();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      signInModal: nextProps.signInModal,
-    });
-  }
-
-
-  storeCollector()
-  {
-    let store = JSON.parse(localStorage.getItem('login'));
-   
-    if(store && store.login){
-      this.setState({login:true,store:store})
-    }
-  }
-
-  login = async () =>
-  {
-    console.log('hihi');
-    signInWithGoogle();
-
-    auth.onAuthStateChanged(      this.setState({authOk:true}))
-
-
-    
-    // if(this.state.store.store){
-   
-    //   // useHistory().push("/manage");
-    // }
-
-    // let loginParams = {
-    //   "email": this.state.loginData.email,
-    //   "password": this.state.loginData.password
-    //  //  "email": "adam@wp.pl",
-    //   //"password": "123456"
-    // };
-    // console.log(loginParams);
-    // axios.post('https://localhost:5001/login', loginParams) 
-    //   .then((result)=>{
-    //   console.warn("result",result);
-      
-    //   localStorage.setItem('login',JSON.stringify({
-    //     login:true,
-    //     store:result.data.token,
-    //     loginData:this.state.loginData
-    //     // email: this.state.loginData.email,
-    //     // password: this.state.loginData.password
-    //   }))
-
-
-
-
-      // this.storeCollector()
-
-/*
-
-      if(this.state.store.store){
-   
-        useHistory().push("/manage");
+  const login = useCallback(
+    async event => {
+      // event.preventDefault();
+      // const { email, password } = event.target.elements;
+      try {
+        const provider = new firebase_auth.GoogleAuthProvider();
+        await auth.signInWithPopup(provider);
+          // .signInWithEmailAndPassword(email.value, password.value);
+        history.push("/dashboard");
+      } catch (error) {
+        alert(error);
       }
-*/
-    // })
-  }
-  get = async () => {
- 
-    // let token = "Bearer " + this.state.store.store
-    // console.log(token);
-    // axios.get('https://localhost:5001/item', {
-    //   headers:{
-    //     'Authorization':token
-    //   }
-    // }).then((response) => {
-    //   console.log(response.data)
-    // })
-    
-  }
+    },
+    [history]
+  );
 
-  logOut = async () =>{
-    localStorage.clear();
+  // logOut = async () =>{
+  //   localStorage.clear();
+  // }
+
+  const { currentUser } = useContext(AuthContext);
+
+  if (currentUser) {
+    return <Redirect to="/dashboard" />;
   }
-
-
-  render() {
-    const { signInModal, loginData } = this.state;
 
     return (
       <div>
         {/* {  this.state.store && <Redirect from="/" to="/dashboard" /> } */}
-        {  this.state.authOk && <Redirect from="/" to="/dashboard" /> }
+        {/* {  this.state.authOk && <Redirect from="/" to="/dashboard" /> } */}
 
-        <Modal isOpen={signInModal}>
+        <Modal isOpen={props.signInModal}>
           <ModalHeader cssModule={{ "modal-title": "w-100 text-center" }}>
             Zaloguj
           </ModalHeader>
           <ModalBody>
-            <FormGroup>
+            {/* <FormGroup>
               <Label for="login">E-mail</Label>
               <Input
                 required
@@ -167,11 +95,11 @@ class SignInModal extends Component {
                   this.setState({ loginData });
                 }}
               />
-            </FormGroup>
+            </FormGroup> */}
             <Button
               color="success"
               className="btn-lg  btn-block"
-              onClick={()=>{this.login()}}
+              onClick={()=>{login()}}
             >
               Zaloguj się
             </Button>
@@ -184,7 +112,7 @@ class SignInModal extends Component {
               <a href="/forgot-password">Zapomniałeś hasła?</a>
             </div>
 
-            <GoogleLoginButton style={{backgroundColor: "white !important"}}  onClick={this.login}><span>Kontynuuj z kontem Google</span></GoogleLoginButton>
+            <GoogleLoginButton style={{backgroundColor: "white !important"}}  onClick={login}><span>Kontynuuj z kontem Google</span></GoogleLoginButton>
                 <MicrosoftLoginButton><span>Kontynuuj z kontem Office 365</span></MicrosoftLoginButton>
 
           </ModalBody>
@@ -192,7 +120,7 @@ class SignInModal extends Component {
             {/* <Button color="primary" >Add</Button>{' '} */}
             <Button
               color="secondary"
-              onClick={this.toggleSignInModal.bind(this)}
+              onClick={toggleSignInModal.bind(this)}
             >
               Anuluj
             </Button>
@@ -201,7 +129,7 @@ class SignInModal extends Component {
         {/* {this.renderRedirect()}  */}
       </div>
     );
-  }
+    
 }
-export default SignInModal;
+export default  withRouter(SignInModal);
   
