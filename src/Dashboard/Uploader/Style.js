@@ -1,5 +1,3 @@
-import React from "react";
-
 const baseStyle = {
     flex: 1,
     display: 'flex',

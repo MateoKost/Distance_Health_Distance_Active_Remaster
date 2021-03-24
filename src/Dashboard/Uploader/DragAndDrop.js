@@ -4,7 +4,6 @@ import ReactPlayer from "react-player";
 
 import {baseStyle, activeStyle, acceptStyle, rejectStyle, thumbsContainer, thumb, thumbInner, img} from "./Style"
 
-
 function DnD(props) {
   const [files, setFiles] = useState([]);
   const {     getRootProps,

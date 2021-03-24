@@ -1,14 +1,10 @@
-//import '../../../App.css';
 import React, { Component } from 'react';
-
-import AutoSlider from './AutoSlider';
-
-import { Label, FormGroup, Input, Table, Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
-
+import { Button} from 'reactstrap';
 import './LP.css';
 import NavMenu from './NavMenu';
-import SignInModal from "./SignInModal";
-// import RegisterModal from "../../Modals/RegisterModal";
+import AutoSlider from './AutoSlider';
+import SignInModal from "../Authorization/SignInModal";
+import RegisterModal from "../Authorization/RegisterModal";
 
 class LandingPage extends Component {
     constructor(props){
@@ -41,8 +37,8 @@ class LandingPage extends Component {
         <NavMenu onClick={this.toggleSignInModal} />
         <AutoSlider />
         <Button color="dark" className="m-4 p-4" onClick={ this.toggleRegisterModal } > Zarejestruj się  </Button>
-        <SignInModal signInModal={ this.state.signInModal } onCancel={this.toggleSignInModal} />
-        {/* <RegisterModal registerModal={ this.state.registerModal } onCancel={this.toggleRegisterModal}/> */}
+        <SignInModal signInModal={ this.state.signInModal } onCancel={this.toggleSignInModal} onActiveOther={this.toggleRegisterModal}/>
+        <RegisterModal registerModal={ this.state.registerModal } onCancel={this.toggleRegisterModal} onActiveOther={this.toggleSignInModal}/>
     </div>
   );
 }
