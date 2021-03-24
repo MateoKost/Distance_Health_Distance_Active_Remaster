@@ -23,13 +23,15 @@ import { auth, firebase_auth,
 import { AuthContext } from "./Auth.js";
 import "../App.css";
 
+import { ModalContext } from "../LandingPage/ModalContext";
+
 const SignInModal = (props, { history }) => {
 
   // const [loginData, setLoginData] = useState({login:"", password:""});
 
-  const toggleSignInModal = () => {
-    props.onCancel();
-  };
+  // const toggleSignInModal = () => {
+  //   props.onCancel();
+  // };
 
   const login = useCallback(
     async (event) => {
@@ -65,6 +67,9 @@ const SignInModal = (props, { history }) => {
     [history]
   );
 
+  const { signInModal, registerModal, toggleRegisterModal, toggleSignInModal } = useContext(
+    ModalContext
+  );
 
   const { currentUser } = useContext(AuthContext);
 
@@ -74,8 +79,8 @@ const SignInModal = (props, { history }) => {
 
   return (
     <div>
-      <Modal isOpen={props.signInModal}>
-        <ModalHeader cssModule={{ "modal-title": "w-100 text-center" }}>
+      <Modal isOpen={signInModal} toggle={toggleSignInModal}>
+        <ModalHeader cssModule={{ "modal-title": "w-100 text-center" }} toggle={toggleSignInModal}>
           Logowanie
         </ModalHeader>
         <ModalBody>
@@ -153,18 +158,20 @@ const SignInModal = (props, { history }) => {
             // style={{ backgroundColor: "lightblue" }}
             onClick={login}
           >
-            <span>Dołącz z kontem Google</span>
+            <span>Kontynuuj z kontem Google</span>
           </GoogleLoginButton>
           <MicrosoftLoginButton>
-            <span>Dołącz z kontem Office 365</span>
+            <span>Kontynuuj z kontem Office 365</span>
           </MicrosoftLoginButton>
 
           <p className="text-center mt-3">Nie masz jeszcze konta? <a href="javascript:null" 
           onClick={
             ()=> {
-              props.onCancel();
-              props.onActiveOther();
-            //   // toggleRegisterModal();
+              toggleSignInModal();
+              toggleRegisterModal();
+              // props.onCancel();
+              // props.onActiveOther();
+              // toggleRegisterModal();
               // toggleSignInModal.bind(this)
             }
         
@@ -174,12 +181,13 @@ const SignInModal = (props, { history }) => {
           </FormGroup>
 
         </ModalBody>
-        <ModalFooter>
+        {/* <ModalFooter> */}
           {/* <Button color="primary" >Add</Button>{' '} */}
-          <Button color="secondary" onClick={toggleSignInModal.bind(this)}>
+          {/* <Button color="secondary" onClick={toggleSignInModal}>
             Anuluj
-          </Button>
-        </ModalFooter>
+          </Button> */}
+
+        {/* </ModalFooter> */}
       </Modal>
       {/* {this.renderRedirect()}  */}
     </div>

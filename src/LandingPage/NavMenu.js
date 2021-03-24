@@ -16,11 +16,26 @@ import {
 signOut
 } from "../base";
 
+// import { ModalProvider } from "./ModalContext";
+import { ModalContext } from "./ModalContext";
+
+import React, { useContext } from 'react';
+
 const NavMenu = (props) => {
 
   const history = useHistory();
 
+
+  const { signInModal,toggleSignInModal } = useContext(
+    ModalContext
+  );
+
+
   return (
+
+
+
+
 
 <div>
       <Navbar className="navbar-dark bg-dark"  expand="md">
@@ -59,13 +74,17 @@ const NavMenu = (props) => {
           </Nav>
 
 
-     
+          <NMButton 
+            onClick={() =>toggleSignInModal()}
+            icon={faSignInAlt}
+            label="Zaloguj"
+          />
 
-
-          <Button color="dark" style={{minWidth:"100px"}} onClick={props.onClick} >
+{/* 
+          <Button color="dark" style={{minWidth:"100px"}} onClick={toggleSignInModal} >
             <div><FontAwesomeIcon icon={faSignInAlt} className="fa-lg"/></div>
             <div style={{marginTop: -4}}><span style={{fontSize: 12}}>Zaloguj</span></div>
-            </Button>
+            </Button> */}
           {/* <NavbarText>Zaloguj</NavbarText> */}
         </Collapse>
       </Navbar>
@@ -73,3 +92,24 @@ const NavMenu = (props) => {
 )};
 
 export default NavMenu;
+
+
+
+const NMButton = ({ onClick, icon, label }) => {
+
+  const btnStyle = {
+    minWidth: "100px",
+    borderWidth: "0px"
+  }
+
+  return (
+    <Button color="dark" style={btnStyle} onClick={onClick} >
+      <div>
+        <FontAwesomeIcon icon={icon} className="fa-lg" />
+      </div>
+      <div style={{ marginTop: -4 }}>
+        <span style={{ fontSize: 12 }}>{label}</span>
+      </div>
+    </Button>
+  );
+};

@@ -23,13 +23,19 @@ import { auth, firebase_auth, firestore } from "../base";
 import { AuthContext } from "./Auth.js";
 import "../App.css";
 
+import { ModalContext } from "../LandingPage/ModalContext";
+
 const RegisterModal = (props, { history }) => {
-  const toggleRegisterModal = () => {
-    props.onCancel();
-  };
+  // const toggleRegisterModal = () => {
+  //   props.onCancel();
+  // };
   
   const { currentUser } = useContext(
     AuthContext
+  );
+
+  const { registerModal, toggleRegisterModal, toggleSignInModal } = useContext(
+    ModalContext
   );
 
   // const usersRef = firestore.collection("users");
@@ -83,8 +89,9 @@ const RegisterModal = (props, { history }) => {
 
   return (
     <div>
-      <Modal isOpen={props.registerModal}>
-        <ModalHeader cssModule={{ "modal-title": "w-100 text-center" }}>
+      {/* <Modal isOpen={props.registerModal}> */}
+            <Modal isOpen={registerModal} toggle={toggleRegisterModal}>
+        <ModalHeader cssModule={{ "modal-title": "w-100 text-center" }} toggle={toggleRegisterModal}>
           Rejestracja
         </ModalHeader>
         <ModalBody>
@@ -182,8 +189,8 @@ const RegisterModal = (props, { history }) => {
           <p className="text-center mt-3">Masz już konto? <a href="javascript:null" 
           onClick={
             ()=> {
-              props.onCancel();
-              props.onActiveOther();
+              toggleRegisterModal();
+              toggleSignInModal();
             //   // toggleRegisterModal();
               // toggleSignInModal.bind(this)
             }
@@ -193,12 +200,12 @@ const RegisterModal = (props, { history }) => {
           </FormGroup>
          
         </ModalBody>
-        <ModalFooter>
+        {/* <ModalFooter> */}
           {/* <Button color="primary" >Add</Button>{' '} */}
-          <Button color="secondary" onClick={toggleRegisterModal.bind(this)}>
-            Anuluj
-          </Button>
-        </ModalFooter>
+          {/* <Button color="secondary" onClick={toggleRegisterModal.bind(this)}> */}
+            {/* Anuluj */}
+          {/* </Button> */}
+        {/* </ModalFooter> */}
       </Modal>
       {/* {this.renderRedirect()}  */}
     </div>
