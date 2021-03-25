@@ -5,6 +5,7 @@ import NavMenu from './NavMenu';
 import AutoSlider from './AutoSlider';
 import SignInModal from "../Authorization/SignInModal";
 import RegisterModal from "../Authorization/RegisterModal";
+import RegisterInfoModal from "../Authorization/RegisterInfoModal";
 
 import { ModalProvider } from "./ModalContext";
 import { ModalContext } from "./ModalContext";
@@ -62,6 +63,7 @@ import { ModalContext } from "./ModalContext";
          <SignInModal />
          {/* <RegisterModal registerModal={ this.state.registerModal } onCancel={this.toggleRegisterModal} onActiveOther={this.toggleSignInModal}/> */}
         <RegisterModal />
+        <RegisterInfoModal />
         </ModalProvider>
     </div>
   );

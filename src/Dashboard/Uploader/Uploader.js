@@ -4,12 +4,15 @@ import { uploadFile } from "../../base";
 
 import DragAndDrop from "./DragAndDrop";
 
-import { Button, Card, CardBody, CardText, CardHeader } from "reactstrap";
+import { Button, Card, CardBody, CardText, CardHeader, } from "reactstrap";
 
 import { UncontrolledCollapse } from "reactstrap";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLongArrowAltUp } from "@fortawesome/free-solid-svg-icons";
+import { faLongArrowAltUp,faChair } from "@fortawesome/free-solid-svg-icons";
+
+import ItemIconNames from "../IconNames";
+
 
 function Uploader(props) {
   const [videoFile, setVideoFile] = useState([]);
@@ -40,6 +43,10 @@ function Uploader(props) {
   };
   
 
+  const cardId=`toggler-${props.cardId}`
+
+  const icon = ItemIconNames.find((item) => item.name === "add");
+
   return (
     <div>
       {/* <h2>Prześlij plik</h2> */}
@@ -49,13 +56,17 @@ function Uploader(props) {
 
       {/* <input type="file" id="file" multiple onChange={handleVideoUpload}/> */}
 
-      <Button id="toggler" size="lg" block>
-        <FontAwesomeIcon icon={faLongArrowAltUp} className="fa-lg" />
+      <Button id={cardId} size="lg" block>
+
+
+       {icon ? icon.faIcon : <FontAwesomeIcon icon={faChair} />} {" "}
+
+        {/* <FontAwesomeIcon icon={faLongArrowAltUp} className="fa-lg" /> */}
         Dodaj wyniki
       </Button>
-      <UncontrolledCollapse toggler="#toggler">
+      <UncontrolledCollapse toggler={"#"+cardId}>
         <Card>
-          <CardHeader>Prześlij plik</CardHeader>
+          {/* <CardHeader>Prześlij plik</CardHeader> */}
 
           <CardBody>
             {/* <CardTitle tag="h5">Special Title Treatment</CardTitle> */}
