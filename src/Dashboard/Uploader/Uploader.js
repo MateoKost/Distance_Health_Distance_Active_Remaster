@@ -11,8 +11,8 @@ import { UncontrolledCollapse } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltUp,faChair } from "@fortawesome/free-solid-svg-icons";
 
-import ItemIconNames from "../IconNames";
-
+import ItemIconNames from "../../Utilities/IconNames";
+// import SpinnerGroup from '../../Utilities/SpinnerGroup';
 
 function Uploader(props) {
   const [videoFile, setVideoFile] = useState([]);

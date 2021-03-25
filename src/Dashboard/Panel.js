@@ -1,6 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
-import { Spinner, CardColumns, CardDeck } from "reactstrap";
+import {
+  Spinner,
+  CardColumns,
+  CardDeck,
+  UncontrolledCollapse,
+  Button,
+  Collapse,Card,CardBody
+} from "reactstrap";
+
+import Tasks from './Tasks/Tasks';
+
+
+import SpinnerGroup from '../Utilities/SpinnerGroup';
 
 import NMLoggedIn from "./NavMenu/NMLoggedIn";
 
@@ -9,16 +21,17 @@ import { AuthContext, AuthProvider } from "../Authorization/Auth.js";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import { firestore } from "../base.js";
+import ItemIconNames from "../Utilities/IconNames";
+import TaskCard from "./Tasks/TaskCard";
 
-import TaskCard from "./Task";
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
-const spinnerGroup = (
-  <div>
-    <Spinner type="grow" color="info" />
-    <Spinner type="grow" color="info" />
-    <Spinner type="grow" color="info" />
-  </div>
-);
+
+
+import "./Tasks/Task.css";
+
+import NewTaskModal from "./Tasks/NewTaskModal";
 
 function Viewer(props) {
   const { currentUser } = useContext(AuthContext);
@@ -29,167 +42,146 @@ function Viewer(props) {
   const tasksRef = firestore.collection("tasks");
   // const [tasks] = useCollectionData(tasksRef, { idField: "id" });
 
+  const [tasks, setTasks] = useState([]);
+  const [tasksPending, setTasksPending] = useState(true);
 
-  const [tasks, setTasks] = useState([]); 
-  const [tasksPending, setTasksPending] = useState(true); 
+  const groupsRef = firestore.collection("classes");
+  // const [classes, setClasses] = useState([]);
+  // const [classesPending, setClassesPending] = useState(true);
+
+  const [classes] = useCollectionData(groupsRef , { idField: "id" });
+
 
   useEffect(() => {
-    // auth.onAuthStateChanged((user) => {
-    //   setCurrentUser(user);
-    //   setPending(false);
-    // });
-
-
     async function fetchTasks() {
-      
-      let documents=[];
-      
+      let documents = [];
+
       const snapshot = await tasksRef
-          .where("student", "==", currentUser.uid)
-          .get();
-        if (snapshot.empty) {
-          console.log("No matching documents.");
-          return;
-        }
-        else 
-        {
-
-     
-          // .then(() => {
-          //   setIsLoading(false);
-          // });
-
-
-          // console.log(snapshot)
+        .where("student", "==", currentUser.uid)
+        .get();
+      if (snapshot.empty) {
+        console.log("No matching documents.");
+        return;
+      } else {
         snapshot.forEach((doc) => {
-         documents.push({id: doc.id, ...doc.data()}); 
+          documents.push({ id: doc.id, ...doc.data() });
 
-         Promise.all(documents)
-         .then(() => {console.log(documents); setTasks(documents) }).then(()=>{setTasksPending(false)})
-
-        // console.log(doc.id, "=>", doc.data());
-        
-      });
-      return documents;
-
-        }
-
+          Promise.all(documents)
+            .then(() => {
+              // console.log(documents);
+              setTasks(documents);
+            })
+            .then(() => {
+              setTasksPending(false);
+            });
+        });
+        return documents;
+      }
     }
 
-    const items = fetchTasks();
-    console.log(items );
+    async function fetchGroups() {
+      // let documents = [];
 
+      // const snapshot = await groupsRef
+      //   // .where("student", "==", currentUser.uid)
+      //   .get();
 
+      // if (snapshot.empty) {
+      //   console.log("No matching documents.");
+      //   return;
+      // } else {
 
+        console.log(classes)
 
+        // Promise.all(snapshot)
+        //     .then((result) => {
+        //       console.log(result)
+        //   // setClasses(result);
+        //     })
+            // .then(() => {
+            //   setClassesPending(false);
+            // });
+     
+
+        // snapshot.forEach((doc) => {
+        //   documents.push({ id: doc.id, ...doc.data() });
+
+        //   Promise.all(documents)
+        //     .then((result) => {
     
-    // onClick={async () => {
-    //   const snapshot = await tasksRef
-    //     .where("student", "==", currentUser.uid)
-    //     .get();
-    //   if (snapshot.empty) {
-    //     console.log("No matching documents.");
-    //     return;
-    //   }
+        //   setClasses(result);
+        //     })
+        //     .then(() => {
+        //       setClassesPending(false);
+        //     });
+        // });
+        // return documents;
+      }
+    
 
-    //   snapshot.forEach((doc) => {
-    //     console.log(doc.id, "=>", doc.data());
-    //   });
+    const items = fetchTasks();
+    // console.log(items);
 
-  // useEffect(() => {
-  //   async function fetchDownloableURLs() {
-  //     let downloables = [];
-  //     const promises = videos.map(async ({ url }) => {
-  //       await retrieveDownloadUrl(url).then((result) =>
-  //         downloables.push(result)
-  //       );
-  //     });
-  //     await Promise.all(promises)
-  //       .then(() => setDownloables(downloables))
-  //       .then(() => {
-  //         setIsLoading(false);
-  //       });
-  //   }
-  //   videos && fetchDownloableURLs();
-  // }, [videos]);
-
-
+    // const groups2 = fetchGroups();
+    // console.log(groups2);
 
   }, []);
+
+
+  const [value, onChange] = useState(new Date());
+  const [selectedDay, setSelectedDay] = useState(new Date());
+
+                      // onChange={setEndDate}
+                      // value={endDate}
 
   return (
     <div>
       <NMLoggedIn />
-      {/* {usersRef.doc("BLxO7xwhAWbNBjHTD9ouE9jH8Av2").get()} */}
+      <NewTaskModal  classes={classes} tasksRef={tasksRef}/>
+      <Tasks
+        state={true}
+        label="Dostepne zadania"
+        tasks={{ tasksPending, tasks }}
+      />
+      <Tasks
+        state={false}
+        label="Ukończone zadania"
+        tasks={{ tasksPending, tasks }}
+      />
+      <div>
 
-      {/* <button
-        onClick={() => {
-          console.log(users);
-          usersRef
-            .doc("BLxO7xwhAWbNBjHTD9ouE9jH8Av2")
-            .get()
-            .then((snapshot) => console.log(snapshot));
+       <Calendar
+        onClickDay={(value, event)=>{
+          // const isoDate = value.toDate().toISOString();
+          const d = new Date(value).toLocaleDateString("en-GB");
+          alert(d);
         }}
-      >
-        dgfgdf
-      </button>
-
-      <button
-        onClick={() => {
-          console.log(currentUser.uid);
-          firestore
-            .collection("tasks")
-            .where("student", "==", currentUser.uid)
-            .get()
-            .then((result) => console.log(result));
-        }}
-      >
-        read tasks
-      </button>
-
-      <button
-        onClick={async () => {
-          const snapshot = await tasksRef
-            .where("student", "==", currentUser.uid)
-            .get();
-          if (snapshot.empty) {
-            console.log("No matching documents.");
-            return;
-          }
-
-          snapshot.forEach((doc) => {
-            console.log(doc.id, "=>", doc.data());
-          });
-        }}
-      >
-        read tasks2
-      </button> */}
-
-
-
-{/* 
-      {users.length}
-      {currentUser.email}
-      {"   "}
-      {currentUser.uid} */}
-
-
-      <CardColumns className="m-2">
-      {/* { tasksPending ? "Loading///" : tasks.map(({coach})=> <li> {coach}</li>)} */}
-      { tasksPending ? "Loading///" : tasks.map( TaskCard )}
-      {/* { tasksPending ? "Loading///" : tasks.map( TaskCard )}
-      { tasksPending ? "Loading///" : tasks.map( TaskCard )}
-      { tasksPending ? "Loading///" : tasks.map( TaskCard )} */}
-      </CardColumns>
-
-      {/* <h2>Sent Documents</h2>
-      {props.isLoading
-        ? spinnerGroup
-        : props.downloables.map((URL) => (
-            <ReactPlayer url={URL} width="40%" height="40%" controls={true} />
-          ))} */}
+        onChange={onChange}
+        value={value}
+      />
+      </div>
     </div>
   );
 }
 
 export default Viewer;
+
+
+
+
+
+
+
+// const NewTask = () => {
+//   const addIcon = ItemIconNames.find((item) => item.name === "add" );
+//   return (
+//     <Card>
+//     <CardBody>
+//     <Button  color="primary" className="btn-circle" >
+//     <span className="fa-3x"> {addIcon.faIcon} </span>
+//     </Button>
+//     </CardBody>
+//     </Card>
+  
+//   )
+// }
