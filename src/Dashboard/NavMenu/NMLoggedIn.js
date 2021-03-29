@@ -17,7 +17,12 @@ import {
   faTasks,
   faUser,
   faCalendarAlt,
+  faTask,
+  faCalendarDay,
+  faClipboardList,
+  faUsers
 } from "@fortawesome/free-solid-svg-icons";
+
 
 import { auth } from "../../base";
 
@@ -54,6 +59,17 @@ const NavMenu = () => {
             </NavItem>
           </Nav>
 
+          <NMButton
+            onClick={() => console.log("Grupy")}
+            icon={faUsers}
+            label="Grupy"
+          />
+
+                      <NMButton
+            onClick={() => console.log("Zadania")}
+            icon={faClipboardList}
+            label="Zadania"
+          />
           <NMButton
             onClick={() => console.log("Profil")}
             icon={faUser}

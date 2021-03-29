@@ -17,29 +17,6 @@ import LandingPage from "./LandingPage/LandingPage";
 import "./App.css";
 
 function App() {
-  // const [user] = useAuthState(auth);
-  const videosRef = firestore.collection("videos");
-  const [videos] = useCollectionData(videosRef, { idField: "id" });
-
-  const [downloables, setDownloables] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchDownloableURLs() {
-      let downloables = [];
-      const promises = videos.map(async ({ url }) => {
-        await retrieveDownloadUrl(url).then((result) =>
-          downloables.push(result)
-        );
-      });
-      await Promise.all(promises)
-        .then(() => setDownloables(downloables))
-        .then(() => {
-          setIsLoading(false);
-        });
-    }
-    videos && fetchDownloableURLs();
-  }, [videos]);
 
   return (
     <div className="App conta">
@@ -52,10 +29,10 @@ function App() {
               path="/dashboard"
               component={() => (
                 <Viewer
-                  downloables={downloables}
-                  isLoading={isLoading}
-                  setDownloables={setDownloables}
-                  setIsLoading={setIsLoading}
+                  // downloables={downloables}
+                  // isLoading={isLoading}
+                  // setDownloables={setDownloables}
+                  // setIsLoading={setIsLoading}
                 />
               )}
             />

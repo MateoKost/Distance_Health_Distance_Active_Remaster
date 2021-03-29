@@ -20,14 +20,14 @@ import { AuthContext, AuthProvider } from "../Authorization/Auth.js";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-import { firestore } from "../base.js";
+import { firestore, retrieveDownloadUrl } from "../base.js";
 import ItemIconNames from "../Utilities/IconNames";
 import TaskCard from "./Tasks/TaskCard";
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-
+import { uploadFile, showFile } from "../base";
 
 import "./Tasks/Task.css";
 
@@ -36,12 +36,11 @@ import NewTaskModal from "./Tasks/NewTaskModal";
 function Viewer(props) {
   const { currentUser } = useContext(AuthContext);
 
-  const usersRef = firestore.collection("users");
-  const [users] = useCollectionData(usersRef, { idField: "id" });
+  // const usersRef = firestore.collection("users");
+  // const [users] = useCollectionData(usersRef, { idField: "id" });
 
   const tasksRef = firestore.collection("tasks");
   // const [tasks] = useCollectionData(tasksRef, { idField: "id" });
-
   const [tasks, setTasks] = useState([]);
   const [tasksPending, setTasksPending] = useState(true);
 
@@ -49,6 +48,36 @@ function Viewer(props) {
   const [classes, setClasses] = useState([]);
   const [classesPending, setClassesPending] = useState(true);
 
+
+  const videosRef = firestore.collection("videos");
+  const [videos] = useCollectionData(videosRef, { idField: "id" });
+
+  const [downloables, setDownloables] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+                  // downloables={downloables}
+                  // isLoading={isLoading}
+                  // setDownloables={setDownloables}
+                  // setIsLoading={setIsLoading}
+
+
+  useEffect(() => {
+    async function fetchDownloableURLs() {
+      let downloables2 = [];
+      const promises = videos.map(async ({ url }) => {
+        await retrieveDownloadUrl(url).then((result) =>
+          downloables2.push(result)
+        );
+      });
+      await Promise.all(promises)
+        .then(() => setDownloables(downloables2))
+        .then(() => {
+          setIsLoading(false);
+        });
+    }
+    videos && fetchDownloableURLs();
+  }, [videos]);
+  
 
   useEffect(() => {
     async function fetchTasks() {
@@ -135,7 +164,7 @@ function Viewer(props) {
       }
     }
 
-    const items = fetchTasks();
+    fetchTasks();
     // console.log(items);
 
     fetchGroups();
@@ -160,11 +189,11 @@ function Viewer(props) {
         label="Dostepne zadania"
         tasks={{ tasksPending, tasks }}
       />
-      <Tasks
+      {/* <Tasks
         state={false}
         label="Ukończone zadania"
         tasks={{ tasksPending, tasks }}
-      />
+      /> */}
       <div>
 
        <Calendar
@@ -182,23 +211,3 @@ function Viewer(props) {
 }
 
 export default Viewer;
-
-
-
-
-
-
-
-// const NewTask = () => {
-//   const addIcon = ItemIconNames.find((item) => item.name === "add" );
-//   return (
-//     <Card>
-//     <CardBody>
-//     <Button  color="primary" className="btn-circle" >
-//     <span className="fa-3x"> {addIcon.faIcon} </span>
-//     </Button>
-//     </CardBody>
-//     </Card>
-  
-//   )
-// }

@@ -1,8 +1,4 @@
 import {
-  MicrosoftLoginButton,
-  GoogleLoginButton,
-} from "react-social-login-buttons";
-import {
   Label,
   Form,
   FormGroup,
@@ -15,9 +11,8 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  UncontrolledAlert
 } from "reactstrap";
-
-import DateTimePicker from "react-datetime-picker";
 
 import ItemIconNames from "../../Utilities/IconNames";
 // import SpinnerGroup from '../../Utilities/SpinnerGroup';
@@ -26,22 +21,9 @@ import React, {
   useState,
   useCallback,
   useContext,
-  useCollectionData,
 } from "react";
-import { Redirect } from "react-router-dom";
-import { withRouter } from "react-router";
 
 import { AuthContext } from "../../Authorization/Auth.js";
-
-// import { auth, firebase_auth,
-//         firestore
-// } from "../base";
-// import { AuthContext } from "./Auth.js";
-// import "../App.css";
-
-// import { ModalContext } from "../LandingPage/ModalContext";
-
-// import ItemIconNames from "../../Utilities/IconNames";
 
 const categories = [
   { name: "Bieganie", category: "running" },
@@ -52,10 +34,6 @@ const categories = [
 ];
 
 const NewTaskModal = (props, { history }) => {
-  // const { signInModal, registerModal, toggleRegisterModal, toggleSignInModal } = useContext(
-  //   ModalContext
-  // );
-
   const { currentUser } = useContext(AuthContext);
 
   const handleSubmit = useCallback(
@@ -72,50 +50,29 @@ const NewTaskModal = (props, { history }) => {
         n_D,
       } = event.target.elements;
       try {
-        // alert(endDate.value);
+        const categoryName = categories.find(
+          (item) => item.name === category.value
+        );
+        props.tasksRef
+          .add({
+            coach: currentUser.email,
+            name: name.value,
+            classes: Array.from(
+              multiGroup.selectedOptions,
+              (option) => option.value
+            ),
+            type: categoryName.category,
 
-        const categoryName = categories.find((item) => item.name === category.value);
-
-
-
-        props.tasksRef.add({
-          coach: currentUser.uid,
-          name: name.value,
-          classes: Array.from(multiGroup.selectedOptions, option => option.value),
-          type: categoryName.category,
-
-          end: new Date(`${endDate.value} ${endH.value}`),
-          start: new Date(),
-          notes: { B: n_B.value, C: n_C.value, D: n_D.value },
-        }).then((result)=>{alert(result); console.log(result);setNewTaskModal(false)});
-
-
-
-
-
-        //         alert(
-        // // "aaaa"
-        //         //  {multiGroup},
-        //         //  { name },
-        //           // category,
-        //           stamper() + "\n"+
-        //           currentUser.uid + "\n"+
-        //           currentUser.email + "\n"+
-        //           multiGroup.value + "\n"+
-        //           name.value + "\n"+
-        //           category.value + "\n"+
-        //           endDate.value + "\n"+
-        //           endH.value + "\n"+
-        //           n_B.value + "\n"+
-        //           n_C.value + "\n"+
-        //           n_D.value
-
-        //         )
-        // alert(coach.checked);
-
-        // const [users] = useCollectionData(usersRef, { idField: "id" });
-        // setUserFireData();
-        // userFireData
+            end: new Date(`${endDate.value} ${endH.value}`),
+            start: new Date(),
+            notes: { B: n_B.value, C: n_C.value, D: n_D.value },
+          })
+          .then((result) => {
+            if(result.id!==null){
+              setAlertVisibility(true); 
+              setNewTaskModal(false);
+            }
+          });
         // history.push("/");
       } catch (error) {
         alert(error);
@@ -125,13 +82,20 @@ const NewTaskModal = (props, { history }) => {
   );
 
   const [newTaskModal, setNewTaskModal] = useState(false);
+  const [alertVisibility, setAlertVisibility] = useState(false);
 
   const addIcon = ItemIconNames.find((item) => item.name === "add");
 
-  const [endDate, setEndDate] = useState(new Date());
-
   return (
     <div>
+  
+{alertVisibility && (
+    
+        <UncontrolledAlert color="success">
+              <b>Dodano zadanie</b>
+        </UncontrolledAlert> ) }
+
+
       <Button
         color="primary"
         className="btn-circle"
@@ -177,13 +141,7 @@ const NewTaskModal = (props, { history }) => {
 
             <FormGroup>
               <Label for="category">Kategoria</Label>
-              <Input
-                type="select"
-                name="category"
-                id="category"
-            
-                required
-              >
+              <Input type="select" name="category" id="category" required>
                 {categories.map(({ name }) => (
                   <option>{name}</option>
                 ))}
@@ -194,14 +152,7 @@ const NewTaskModal = (props, { history }) => {
               <Col lg="6">
                 <FormGroup>
                   <Label for="endDate">Termin</Label>
-                  <Input
-                    type="date"
-                    id="endDate"
-                    name="endDate"
-                    // min="09:00"
-                    // max="18:00"
-                    required
-                  />
+                  <Input type="date" id="endDate" name="endDate" required />
                 </FormGroup>
               </Col>
               <Col lg="6">
