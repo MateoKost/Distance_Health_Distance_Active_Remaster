@@ -25,15 +25,7 @@ export const firebase_auth = firebase.auth;
 export const storage = firebase.storage();
 export const firestore = firebase.firestore();
 
-export const stamper = () => {
-  // alert("czes")
-
-  return firebase.firestore.Timestamp.now()
-}
-
 export const analytics = firebase.analytics();
-
-
 
 export const uploadFile = async (file, setVideoFileURL) => {
 

@@ -33,7 +33,6 @@ import { withRouter } from "react-router";
 
 import { AuthContext } from "../../Authorization/Auth.js";
 
-
 // import { auth, firebase_auth,
 //         firestore
 // } from "../base";
@@ -52,65 +51,66 @@ const categories = [
   { name: "Siłownia", category: "gym" },
 ];
 
-
-
-
-
-
-
 const NewTaskModal = (props, { history }) => {
   // const { signInModal, registerModal, toggleRegisterModal, toggleSignInModal } = useContext(
   //   ModalContext
   // );
 
-  const { currentUser, stamper } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
-      const {             multiGroup,
+      const {
+        multiGroup,
         name,
         category,
         endDate,
-        endH, n_B, n_C, n_D,  
-         } = event.target.elements;
+        endH,
+        n_B,
+        n_C,
+        n_D,
+      } = event.target.elements;
       try {
-              props.tasksRef.add({ 
+        // alert(endDate.value);
 
-                coach:currentUser.uid,
-                name:name.value,
+        const categoryName = categories.find((item) => item.name === category.value);
 
-          type:category.value,
-          // end:`${endDate.value}${endH.value}`,
-          emd:stamper(),
-          start: stamper(), 
-          // end:endDate.value,
-       
-          
-          notes: { "B":n_B.value,
-          "C":n_C.value,
-          "D":n_D.value,
-          }
-              })
-        
-//         alert(  
-// // "aaaa"
-//         //  {multiGroup},
-//         //  { name },
-//           // category,
-//           stamper() + "\n"+
-//           currentUser.uid + "\n"+
-//           currentUser.email + "\n"+
-//           multiGroup.value + "\n"+
-//           name.value + "\n"+
-//           category.value + "\n"+
-//           endDate.value + "\n"+
-//           endH.value + "\n"+
-//           n_B.value + "\n"+
-//           n_C.value + "\n"+
-//           n_D.value
 
-//         )
+
+        props.tasksRef.add({
+          coach: currentUser.uid,
+          name: name.value,
+          classes: Array.from(multiGroup.selectedOptions, option => option.value),
+          type: categoryName.category,
+
+          end: new Date(`${endDate.value} ${endH.value}`),
+          start: new Date(),
+          notes: { B: n_B.value, C: n_C.value, D: n_D.value },
+        }).then((result)=>{alert(result); console.log(result);setNewTaskModal(false)});
+
+
+
+
+
+        //         alert(
+        // // "aaaa"
+        //         //  {multiGroup},
+        //         //  { name },
+        //           // category,
+        //           stamper() + "\n"+
+        //           currentUser.uid + "\n"+
+        //           currentUser.email + "\n"+
+        //           multiGroup.value + "\n"+
+        //           name.value + "\n"+
+        //           category.value + "\n"+
+        //           endDate.value + "\n"+
+        //           endH.value + "\n"+
+        //           n_B.value + "\n"+
+        //           n_C.value + "\n"+
+        //           n_D.value
+
+        //         )
         // alert(coach.checked);
 
         // const [users] = useCollectionData(usersRef, { idField: "id" });
@@ -124,30 +124,11 @@ const NewTaskModal = (props, { history }) => {
     [history]
   );
 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-  // const handleSubmit = () => {};
-
   const [newTaskModal, setNewTaskModal] = useState(false);
 
   const addIcon = ItemIconNames.find((item) => item.name === "add");
 
   const [endDate, setEndDate] = useState(new Date());
-
-  // const {} = useState();
-
-  // const { currentUser } = useContext(AuthContext);
 
   return (
     <div>
@@ -168,17 +149,19 @@ const NewTaskModal = (props, { history }) => {
             Nowe zadanie
           </ModalHeader>
           <ModalBody>
-
-          <FormGroup>
+            <FormGroup>
               <Label for="name">Grupa</Label>
-          <Input type="select" name="multiGroup" id="multiGroup" multiple required>
-
-   
-            { props.classes && props.classes.map(({ name }) => (
-                  <option>{name}</option>
-            ))}
-
-          </Input>
+              <Input
+                type="select"
+                name="multiGroup"
+                id="multiGroup"
+                multiple
+                // required
+              >
+                <option>I7B2S1</option>
+                {props.classes &&
+                  props.classes.map(({ name }) => <option>{name}</option>)}
+              </Input>
             </FormGroup>
 
             <FormGroup>
@@ -198,7 +181,7 @@ const NewTaskModal = (props, { history }) => {
                 type="select"
                 name="category"
                 id="category"
-                value={categories[0].name}
+            
                 required
               >
                 {categories.map(({ name }) => (
@@ -235,14 +218,6 @@ const NewTaskModal = (props, { history }) => {
                 </FormGroup>
               </Col>
             </Row>
-
-            {/* <DateTimePicker
-                name="endDate"
-                id="endDate"
-                onChange={setEndDate}
-                value={endDate}
-              /> */}
-
             <Table>
               <thead>
                 <tr>
@@ -271,7 +246,7 @@ const NewTaskModal = (props, { history }) => {
             </Table>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" type="submit"> 
+            <Button color="primary" type="submit">
               Dodaj
             </Button>{" "}
             <Button color="secondary" onClick={() => setNewTaskModal(false)}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState,useCollectionData } from "react";
-import { firestore,auth, stamper } from "../base.js";
+import { firestore,auth } from "../base.js";
 
 // import { useCollectionData } from "react-firebase-hooks/firestore";
 
@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [pending, setPending] = useState(true);
   // const [userFireData, setUserFireData] = useState(null);
 
-  const usersRef = firestore.collection("users");
+  // const usersRef = firestore.collection("users");
 
   // const getTimestamp = () => {
   //   firestore.FieldValue.serverTimestamp()
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        currentUser,stamper
+        currentUser
       }}
     >
       {children}

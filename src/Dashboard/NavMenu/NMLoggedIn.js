@@ -21,14 +21,24 @@ import {
 
 import { auth } from "../../base";
 
+import "./NM.css";
+
+// import dhda from "../../../public/Assets/DHDA_alpha.png";
+// import { ReactComponent as YourSvg } from `${process.env.PUBLIC_URL}/Assets/banner.svg`;
+
+const dhda = process.env.PUBLIC_URL + '/Assets/DHDA_alpha.png';
+// const dhda_banner = process.env.PUBLIC_URL + '/Assets/banner_ultra_alpha.svg';
+const dhda_banner = process.env.PUBLIC_URL + '/Assets/banner_ultra_alpha.svg';
+// "%PUBLIC_URL%/favicon.ico"
+
 const NavMenu = () => {
   const history = useHistory();
 
   return (
     <div>
       <Navbar className="navbar-dark bg-dark" expand="md">
-        {/* <img className="logo" src={eszef} alt={"Eszef"} /> */}
-        <NavbarBrand href="/">#DistanceHealthDistanceActive</NavbarBrand>
+    <NavbarBrand href="/"><img  className="dhda" src={dhda_banner} alt={"DHDA"} /> </NavbarBrand> 
+        {/* <NavbarBrand href="/"><img  className="dhda" src={dhda} alt={"DHDA"} /> <span className="ml-2">Distance Health Distance Active</span></NavbarBrand> */}
         <NavbarToggler
         // onClick={toggle}
         />

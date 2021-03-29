@@ -46,10 +46,8 @@ function Viewer(props) {
   const [tasksPending, setTasksPending] = useState(true);
 
   const groupsRef = firestore.collection("classes");
-  // const [classes, setClasses] = useState([]);
-  // const [classesPending, setClassesPending] = useState(true);
-
-  const [classes] = useCollectionData(groupsRef , { idField: "id" });
+  const [classes, setClasses] = useState([]);
+  const [classesPending, setClassesPending] = useState(true);
 
 
   useEffect(() => {
@@ -57,7 +55,7 @@ function Viewer(props) {
       let documents = [];
 
       const snapshot = await tasksRef
-        .where("student", "==", currentUser.uid)
+        // .where("student", "==", currentUser.uid)
         .get();
       if (snapshot.empty) {
         console.log("No matching documents.");
@@ -80,27 +78,45 @@ function Viewer(props) {
     }
 
     async function fetchGroups() {
-      // let documents = [];
+      let documents = [];
 
-      // const snapshot = await groupsRef
-      //   // .where("student", "==", currentUser.uid)
-      //   .get();
+      const snapshot = await groupsRef
+        .where("students", 'array-contains', currentUser.email)
+        .get();
 
-      // if (snapshot.empty) {
-      //   console.log("No matching documents.");
-      //   return;
-      // } else {
+      if (snapshot.empty) {
+        console.log("No matching documents.");
+        return;
+      } else {
 
-        console.log(classes)
+
+        snapshot.forEach((doc) => {
+          documents.push({ id: doc.id, ...doc.data() });
+        });
+
+        Promise.all(documents)
+        .then(() => {
+          // console.log(documents);
+          setClasses(documents);
+          // setTasks(documents);
+        })
+        .then(() => {
+          setClassesPending(false);
+        });
+
+        // return documents;
+
+
+        // console.log(classes)
 
         // Promise.all(snapshot)
         //     .then((result) => {
-        //       console.log(result)
+        //       // console.log(result)
         //   // setClasses(result);
         //     })
-            // .then(() => {
-            //   setClassesPending(false);
-            // });
+        //     .then(() => {
+        //       // setClassesPending(false);
+        //     });
      
 
         // snapshot.forEach((doc) => {
@@ -115,13 +131,14 @@ function Viewer(props) {
         //       setClassesPending(false);
         //     });
         // });
-        // return documents;
+        // return snapshot;
       }
-    
+    }
 
     const items = fetchTasks();
     // console.log(items);
 
+    fetchGroups();
     // const groups2 = fetchGroups();
     // console.log(groups2);
 
@@ -137,7 +154,7 @@ function Viewer(props) {
   return (
     <div>
       <NMLoggedIn />
-      <NewTaskModal  classes={classes} tasksRef={tasksRef}/>
+     { classesPending ? "Loding..." : <NewTaskModal  classes={classes} tasksRef={tasksRef}/> }
       <Tasks
         state={true}
         label="Dostepne zadania"
