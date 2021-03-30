@@ -1,37 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
-import ReactPlayer from "react-player";
-import {
-  Spinner,
-  CardColumns,
-  CardDeck,
-  UncontrolledCollapse,
-  Button,
-  Collapse,Card,CardBody
-} from "reactstrap";
-
-import Tasks from './Tasks/Tasks';
-
-
-import SpinnerGroup from '../Utilities/SpinnerGroup';
-
-import NMLoggedIn from "./NavMenu/NMLoggedIn";
 
 import { AuthContext, AuthProvider } from "../Authorization/Auth.js";
-
 import { useCollectionData } from "react-firebase-hooks/firestore";
-
 import { firestore, retrieveDownloadUrl } from "../base.js";
-import ItemIconNames from "../Utilities/IconNames";
-import TaskCard from "./Tasks/TaskCard";
-
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-
 import { uploadFile, showFile } from "../base";
-
-import "./Tasks/Task.css";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 import NewTaskModal from "./Tasks/NewTaskModal";
+import NMLoggedIn from "./NavMenu/NMLoggedIn";
+import Tasks from "./Tasks/Tasks";
+import "./Tasks/Task.css";
+// import SpinnerGroup from "../Utilities/SpinnerGroup";
+
+
+
 
 function Viewer(props) {
   const { currentUser } = useContext(AuthContext);
@@ -49,35 +32,10 @@ function Viewer(props) {
   const [classesPending, setClassesPending] = useState(true);
 
 
-  const videosRef = firestore.collection("videos");
-  const [videos] = useCollectionData(videosRef, { idField: "id" });
-
-  const [downloables, setDownloables] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-                  // downloables={downloables}
-                  // isLoading={isLoading}
-                  // setDownloables={setDownloables}
-                  // setIsLoading={setIsLoading}
-
-
-  useEffect(() => {
-    async function fetchDownloableURLs() {
-      let downloables2 = [];
-      const promises = videos.map(async ({ url }) => {
-        await retrieveDownloadUrl(url).then((result) =>
-          downloables2.push(result)
-        );
-      });
-      await Promise.all(promises)
-        .then(() => setDownloables(downloables2))
-        .then(() => {
-          setIsLoading(false);
-        });
-    }
-    videos && fetchDownloableURLs();
-  }, [videos]);
-  
+  // downloables={downloables}
+  // isLoading={isLoading}
+  // setDownloables={setDownloables}
+  // setIsLoading={setIsLoading}
 
   useEffect(() => {
     async function fetchTasks() {
@@ -95,7 +53,6 @@ function Viewer(props) {
 
           Promise.all(documents)
             .then(() => {
-              // console.log(documents);
               setTasks(documents);
             })
             .then(() => {
@@ -110,80 +67,46 @@ function Viewer(props) {
       let documents = [];
 
       const snapshot = await groupsRef
-        .where("students", 'array-contains', currentUser.email)
+        .where("students", "array-contains", currentUser.email)
         .get();
 
       if (snapshot.empty) {
         console.log("No matching documents.");
         return;
       } else {
-
-
         snapshot.forEach((doc) => {
           documents.push({ id: doc.id, ...doc.data() });
         });
 
         Promise.all(documents)
-        .then(() => {
-          // console.log(documents);
-          setClasses(documents);
-          // setTasks(documents);
-        })
-        .then(() => {
-          setClassesPending(false);
-        });
-
-        // return documents;
-
-
-        // console.log(classes)
-
-        // Promise.all(snapshot)
-        //     .then((result) => {
-        //       // console.log(result)
-        //   // setClasses(result);
-        //     })
-        //     .then(() => {
-        //       // setClassesPending(false);
-        //     });
-     
-
-        // snapshot.forEach((doc) => {
-        //   documents.push({ id: doc.id, ...doc.data() });
-
-        //   Promise.all(documents)
-        //     .then((result) => {
-    
-        //   setClasses(result);
-        //     })
-        //     .then(() => {
-        //       setClassesPending(false);
-        //     });
-        // });
-        // return snapshot;
+          .then(() => {
+            setClasses(documents);
+          })
+          .then(() => {
+            setClassesPending(false);
+          });
       }
     }
 
     fetchTasks();
-    // console.log(items);
-
     fetchGroups();
-    // const groups2 = fetchGroups();
-    // console.log(groups2);
-
   }, []);
-
 
   const [value, onChange] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState(new Date());
 
-                      // onChange={setEndDate}
-                      // value={endDate}
+  // onChange={setEndDate}
+  // value={endDate}
 
   return (
     <div>
       <NMLoggedIn />
-     { classesPending ? "Loding..." : <NewTaskModal  classes={classes} tasksRef={tasksRef}/> }
+      {classesPending ? (
+        "Loding..."
+      ) : (
+        <NewTaskModal classes={classes} tasksRef={tasksRef} />
+      )}
+
       <Tasks
         state={true}
         label="Dostepne zadania"
@@ -195,16 +118,15 @@ function Viewer(props) {
         tasks={{ tasksPending, tasks }}
       /> */}
       <div>
-
-       <Calendar
-        onClickDay={(value, event)=>{
-          // const isoDate = value.toDate().toISOString();
-          const d = new Date(value).toLocaleDateString("en-GB");
-          alert(d);
-        }}
-        onChange={onChange}
-        value={value}
-      />
+        <Calendar
+          onClickDay={(value, event) => {
+            // const isoDate = value.toDate().toISOString();
+            const d = new Date(value).toLocaleDateString("en-GB");
+            alert(d);
+          }}
+          onChange={onChange}
+          value={value}
+        />
       </div>
     </div>
   );

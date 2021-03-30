@@ -24,7 +24,6 @@ export const firebase_auth = firebase.auth;
 
 export const storage = firebase.storage();
 export const firestore = firebase.firestore();
-
 export const analytics = firebase.analytics();
 
 export const uploadFile = async (file, setVideoFileURL) => {
@@ -51,38 +50,3 @@ export const uploadFile = async (file, setVideoFileURL) => {
 };
 
 
-export const showFile  = (videos, setVideoFileURL) => {
-  videos.map(({url})=>console.log(url))
-}
-
-export const retrieveDownloadUrl  =  async(url) => {
-  // console.log(url);
-  const storageRef = storage.ref();
-  const fileRef = storageRef.child(url);
-  // console.log(fileRef.getDownloadURL());
-  // let k
-
-// return url
-  return await fileRef.getDownloadURL()
-
-
-  // let data
-  // try {
-  //   //const response = await window.fetch(endpoint, config)
-  //   await fileRef.getDownloadURL().then((result) => data=result)
-  //   // console.log(data)
-
-
-  //   // if (response.status<=200) {
-  //   return data
-  //   // }
-  //   // throw new Error(response.statusText)
-  // } catch (err) {
-  //   return Promise.reject(err.message ? err.message : data)
-  // }
-
-
- 
-  // storage.ref().child(url).getDownloadURL()
-  // return await fileRef.getDownloadURL()
-}

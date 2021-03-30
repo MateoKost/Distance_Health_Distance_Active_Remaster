@@ -16,6 +16,10 @@ import LandingPage from "./LandingPage/LandingPage";
 
 import "./App.css";
 
+import { FireDataProvider } from "./Authorization/FireDataContext";
+import { FireDataContext } from "./Authorization/FireDataContext";
+
+
 function App() {
 
   return (
@@ -28,12 +32,14 @@ function App() {
               exact
               path="/dashboard"
               component={() => (
+                <FireDataProvider>
                 <Viewer
                   // downloables={downloables}
                   // isLoading={isLoading}
                   // setDownloables={setDownloables}
                   // setIsLoading={setIsLoading}
                 />
+                </FireDataProvider>
               )}
             />
           </div>

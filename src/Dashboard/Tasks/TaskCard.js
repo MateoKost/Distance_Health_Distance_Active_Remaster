@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useContext} from "react";
 import {
   Card,
   CardTitle,
@@ -17,6 +17,13 @@ import { faTshirt } from "@fortawesome/free-solid-svg-icons";
 import DetailsExpand from "./DetailsExpand";
 import ResultSent from "./ResultSent";
 
+
+import { FireDataContext } from "../../Authorization/FireDataContext";
+import { FireDataProvider } from "../../Authorization/FireDataContext";
+
+import { Button } from "bootstrap";
+
+
 const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
   const icon = ItemIconNames.find((item) => item.name === type);
   const calendarIcon = ItemIconNames.find((item) => item.name === "calendar");
@@ -25,6 +32,7 @@ const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
   const isoDate = end.toDate().toISOString();
   const d = new Date(isoDate).toLocaleDateString("en-GB");
 
+  const { taskMedia } = useContext(FireDataContext);
   return (
     <Card key={id}>
       <CardBody>
@@ -60,13 +68,18 @@ const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
           </Col>
         </Row>
         <CardText>
-          <DetailsExpand id={id} notes={notes} />
+        {/* <button onClick={()=>{taskMedia('123');}}>Titaj</button > */}
+                  <ResultSent id={id}/>
+
+          {/* <DetailsExpand id={id} notes={notes} /> */}
         </CardText>
         <CardText>
-          <ResultSent id={id} notes={notes} />
+          {/* <ResultSent id={id} notes={notes} /> */}
         </CardText>
         <CardText>
-          <Uploader cardId={id} />
+          {/* <Uploader cardId={id} /> */}
+
+      
         </CardText>
       </CardBody>
     </Card>
