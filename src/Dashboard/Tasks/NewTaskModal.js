@@ -24,6 +24,7 @@ import React, {
 } from "react";
 
 import { AuthContext } from "../../Authorization/Auth.js";
+import { FireDataContext } from "../../Authorization/FireDataContext";
 
 const categories = [
   { name: "Bieganie", category: "running" },
@@ -35,6 +36,7 @@ const categories = [
 
 const NewTaskModal = (props, { history }) => {
   const { currentUser } = useContext(AuthContext);
+  const { tasksRef, classes } = useContext(FireDataContext);
 
   const handleSubmit = useCallback(
     async (event) => {
@@ -53,7 +55,7 @@ const NewTaskModal = (props, { history }) => {
         const categoryName = categories.find(
           (item) => item.name === category.value
         );
-        props.tasksRef
+        tasksRef
           .add({
             coach: currentUser.email,
             name: name.value,
@@ -62,10 +64,10 @@ const NewTaskModal = (props, { history }) => {
               (option) => option.value
             ),
             type: categoryName.category,
-
             end: new Date(`${endDate.value} ${endH.value}`),
             start: new Date(),
             notes: { B: n_B.value, C: n_C.value, D: n_D.value },
+            status: "pending",
           })
           .then((result) => {
             if(result.id!==null){
@@ -123,8 +125,8 @@ const NewTaskModal = (props, { history }) => {
                 // required
               >
                 <option>I7B2S1</option>
-                {props.classes &&
-                  props.classes.map(({ name }) => <option>{name}</option>)}
+                {classes &&
+                  classes.map(({ name }) => <option>{name}</option>)}
               </Input>
             </FormGroup>
 

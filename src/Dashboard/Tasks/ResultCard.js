@@ -24,15 +24,29 @@ import { FireDataProvider } from "../../Authorization/FireDataContext";
 import { Button } from "bootstrap";
 
 
-const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
-  const icon = ItemIconNames.find((item) => item.name === type);
-  const calendarIcon = ItemIconNames.find((item) => item.name === "calendar");
-  const coachIcon = ItemIconNames.find((item) => item.name === "coach");
-  //   const isoDate = end.toDate().toDateString();
-  const isoDate = end.toDate().toISOString();
-  const d = new Date(isoDate).toLocaleDateString("en-GB");
+// import TaskCard from "./Tasks/TaskCard";
 
-  const { taskMedia } = useContext(FireDataContext);
+const ResultCard = ({ id, comment, media, note, status, student, task, updated  }) => {
+
+
+  const { taskMedia, findTask } = useContext(FireDataContext);
+
+
+  
+
+const { coach, name, type, start, end, notes } = findTask(task);
+
+// const task = findTask();
+
+const icon = ItemIconNames.find((item) => item.name === type);
+const calendarIcon = ItemIconNames.find((item) => item.name === "calendar");
+const coachIcon = ItemIconNames.find((item) => item.name === "coach");
+//   const isoDate = end.toDate().toDateString();
+const isoDate = end.toDate().toISOString();
+const d = new Date(isoDate).toLocaleDateString("en-GB");
+
+const updateDate = new Date(updated.toDate().toISOString()).toLocaleDateString("en-GB");
+
 
   return (
     <Card key={id}>
@@ -71,7 +85,16 @@ const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
         <CardText>
           <DetailsExpand id={id} notes={notes} />
         </CardText>
+        <CardText>
+          <ResultSent media={media}/>
 
+
+          Result sent
+
+
+          {/* data modyfikacji */}
+{/* pliki */}
+        </CardText>
         <CardText>
           <Uploader cardId={id} />
         </CardText>
@@ -80,4 +103,4 @@ const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
   );
 };
 
-export default TaskCard;
+export default ResultCard;

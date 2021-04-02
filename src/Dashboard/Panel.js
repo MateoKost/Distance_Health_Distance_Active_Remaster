@@ -13,84 +13,25 @@ import Tasks from "./Tasks/Tasks";
 import "./Tasks/Task.css";
 // import SpinnerGroup from "../Utilities/SpinnerGroup";
 
+import { FireDataContext } from "../Authorization/FireDataContext";
+import { FireDataProvider } from "../Authorization/FireDataContext";
 
-
+import TaskCard from "./Tasks/TaskCard";
+import ResultCard from "./Tasks/ResultCard";
+import ResultSent from "./Tasks/ResultSent.js";
 
 function Viewer(props) {
-  const { currentUser } = useContext(AuthContext);
-
   // const usersRef = firestore.collection("users");
   // const [users] = useCollectionData(usersRef, { idField: "id" });
 
-  const tasksRef = firestore.collection("tasks");
   // const [tasks] = useCollectionData(tasksRef, { idField: "id" });
-  const [tasks, setTasks] = useState([]);
-  const [tasksPending, setTasksPending] = useState(true);
-
-  const groupsRef = firestore.collection("classes");
-  const [classes, setClasses] = useState([]);
-  const [classesPending, setClassesPending] = useState(true);
-
 
   // downloables={downloables}
   // isLoading={isLoading}
   // setDownloables={setDownloables}
   // setIsLoading={setIsLoading}
 
-  useEffect(() => {
-    async function fetchTasks() {
-      let documents = [];
-
-      const snapshot = await tasksRef
-        // .where("student", "==", currentUser.uid)
-        .get();
-      if (snapshot.empty) {
-        console.log("No matching documents.");
-        return;
-      } else {
-        snapshot.forEach((doc) => {
-          documents.push({ id: doc.id, ...doc.data() });
-
-          Promise.all(documents)
-            .then(() => {
-              setTasks(documents);
-            })
-            .then(() => {
-              setTasksPending(false);
-            });
-        });
-        return documents;
-      }
-    }
-
-    async function fetchGroups() {
-      let documents = [];
-
-      const snapshot = await groupsRef
-        .where("students", "array-contains", currentUser.email)
-        .get();
-
-      if (snapshot.empty) {
-        console.log("No matching documents.");
-        return;
-      } else {
-        snapshot.forEach((doc) => {
-          documents.push({ id: doc.id, ...doc.data() });
-        });
-
-        Promise.all(documents)
-          .then(() => {
-            setClasses(documents);
-          })
-          .then(() => {
-            setClassesPending(false);
-          });
-      }
-    }
-
-    fetchTasks();
-    fetchGroups();
-  }, []);
+  const { classesPending, tasksPending, tasks, results, resultsPending } = useContext(FireDataContext);
 
   const [value, onChange] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState(new Date());
@@ -101,23 +42,26 @@ function Viewer(props) {
   return (
     <div>
       <NMLoggedIn />
-      {classesPending ? (
-        "Loding..."
-      ) : (
-        <NewTaskModal classes={classes} tasksRef={tasksRef} />
-      )}
+      {classesPending ? "" : <NewTaskModal />}
 
       <Tasks
         state={true}
         label="Dostepne zadania"
-        tasks={{ tasksPending, tasks }}
+        tasks={{ pending:tasksPending, tasks:tasks.map(TaskCard)  }}
       />
+
+      <Tasks
+        state={false}
+        label="Oddane zadania"
+        tasks={{ pending:resultsPending, tasks:results.map(ResultCard) }}
+      />
+
       {/* <Tasks
         state={false}
         label="Ukończone zadania"
         tasks={{ tasksPending, tasks }}
       /> */}
-      <div>
+      {/* <div>
         <Calendar
           onClickDay={(value, event) => {
             // const isoDate = value.toDate().toISOString();
@@ -127,7 +71,7 @@ function Viewer(props) {
           onChange={onChange}
           value={value}
         />
-      </div>
+      </div> */}
     </div>
   );
 }
