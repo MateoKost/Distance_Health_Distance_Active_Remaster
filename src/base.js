@@ -26,27 +26,5 @@ export const storage = firebase.storage();
 export const firestore = firebase.firestore();
 export const analytics = firebase.analytics();
 
-export const uploadFile = async (file, setVideoFileURL) => {
-
-  const storageRef = storage.ref();
-  const childPath = "Videos/" + file.name;
-  const fileRef = storageRef.child(childPath);
-  const videosRef = firestore.collection("videos");
-
-  await fileRef.put(file).then(() => {
-    console.log("Uploaded a file");
-  });
-
-  await videosRef
-    .add({
-      url: childPath,
-      user: "user123",
-    })
-    .then(() => console.log("Registry updated"));
-
-  // await fileRef.getDownloadURL().then((result) => {
-  //   setVideoFileURL(result);
-  // });
-};
 
 

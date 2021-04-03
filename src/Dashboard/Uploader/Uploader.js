@@ -1,6 +1,6 @@
 import ReactPlayer from "react-player";
-import React, { useState, useRef } from "react";
-import { uploadFile } from "../../base";
+import React, { useState, useRef,useContext, useEffect } from "react";
+// import { uploadFile } from "../../base";
 
 import DragAndDrop from "./DragAndDrop";
 
@@ -11,35 +11,52 @@ import { UncontrolledCollapse } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltUp,faChair } from "@fortawesome/free-solid-svg-icons";
 
+import { FireDataContext } from "../../Authorization/FireDataContext";
+
+
+
 import ItemIconNames from "../../Utilities/IconNames";
 // import SpinnerGroup from '../../Utilities/SpinnerGroup';
 
 function Uploader(props) {
   const [videoFile, setVideoFile] = useState([]);
   const [videoOK, setVideoOK] = useState(false);
-  const [videoFileURL, setVideoFileURL] = useState([]);
+  // const [videoFileURL, setVideoFileURL] = useState([]);
 
-  const handleVideoUpload = (event) => {
-    let outcome = [];
-    for (let file of event.target.files) {
-      outcome.push({
-        url: URL.createObjectURL(file),
-        file: file,
-      });
-    }
-    setVideoFile(outcome);
-    setVideoOK(true);
-  };
+  const { createResult } = useContext(FireDataContext);
 
-  const enterFile = (file) => {
-    uploadFile(file, setVideoFileURL);
-  };
+
+  // const handleVideoUpload = (event) => {
+  //   let outcome = [];
+  //   for (let file of event.target.files) {
+  //     outcome.push({
+  //       url: URL.createObjectURL(file),
+  //       file: file,
+  //     });
+  //   }
+  //   setVideoOK(true);
+  //   setVideoFile(outcome)
+  // };
+
+  // const enterFile = (file) => {
+
+    // useEffect(() => {
+
+    //   videoFile[0] !==null && setVideoOK(true)
+    //   // videoFile && setVideoOK(true)
+  
+  
+    // }, [setVideoFile]);
+
+  //   // uploadFile(file, setVideoFileURL);
+  // };
 
   const handleEnterUpload = () => {
-    for (let file of videoFile) {
-      console.log(file);
-      uploadFile(file);
-    }
+    videoFile && createResult(videoFile, props.task)
+    // for (let file of videoFile) {
+    //   console.log(file);
+    //   uploadFile(file);
+    // }
   };
   
 
@@ -71,12 +88,22 @@ function Uploader(props) {
           <CardBody>
             {/* <CardTitle tag="h5">Special Title Treatment</CardTitle> */}
             <CardText>
-              <DragAndDrop setFiles={setVideoFile} />
+              <DragAndDrop setFiles={setVideoFile} setVideoOK={setVideoOK}/>
             </CardText>
 
-            {videoOK ? (            <Button
+            <Button
               color="info"
               onClick={handleEnterUpload}
+              disabled={!videoOK}
+            >
+              Prześlij
+            </Button>
+
+
+            {/* {videoOK ? (            <Button
+              color="info"
+              onClick={handleEnterUpload}
+   
             >
               Prześlij
             </Button>) : (            <Button
@@ -85,7 +112,7 @@ function Uploader(props) {
               disabled
             >
               Prześlij
-            </Button>)}
+            </Button>)} */}
 
 
           </CardBody>

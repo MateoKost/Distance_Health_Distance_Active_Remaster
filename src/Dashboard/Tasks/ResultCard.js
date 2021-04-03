@@ -96,7 +96,7 @@ const updateDate = new Date(updated.toDate().toISOString()).toLocaleDateString("
 {/* pliki */}
         </CardText>
         <CardText>
-          <Uploader cardId={id} />
+          <Uploader cardId={id} task={task}/>
         </CardText>
       </CardBody>
     </Card>

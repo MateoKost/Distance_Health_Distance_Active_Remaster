@@ -18,6 +18,7 @@ function DnD(props) {
       }))
       setFiles(filesToSet);
       props.setFiles(filesToSet);
+      props.setVideoOK(true);
     }
   })
 

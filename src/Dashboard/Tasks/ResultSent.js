@@ -10,6 +10,12 @@ import React, {
   useContext,useEffect
 } from "react";
 
+import {baseStyle, activeStyle, acceptStyle, rejectStyle, thumbsContainer, thumb, thumbInner, img} from "../Uploader/Style"
+
+const regVideo = new RegExp("^(video\/.*)$")
+const regImg = new RegExp("^(image\/.*)$")
+
+
 const ResultSent = (props) => {
   const cardId = `resultSentToggler-${props.id}`;
   const downIcon = ItemIconNames.find((item) => item.name === "down");
@@ -39,25 +45,39 @@ const ResultSent = (props) => {
       {/* {!downloablesPending && console.log(downloables)} */}
       {/* <CardColumns className="m-2">  */}
 
-     { !downloablesPending && downloables.map((url) => 
+      <section className="container">
+
+      <aside style={thumbsContainer}>
+
+
+     { !downloablesPending && downloables.map(({contentType, downloadURL}) => 
        
       //  console.log(url);
       //  key={     url.split('token=')[1]} 
-     (
+     
 
-<article>
-<ReactPlayer
-            url={url}
-            width="100%"
-            height="100%"
-            controls={true}
-          />
-</article>
+  <div style={thumb} key={downloadURL}>
+      <div style={thumbInner}>
+        {regVideo.test(contentType) ? (
+             <ReactPlayer
+             url={downloadURL}
+             width="100%"
+             height="100%"
+             controls={true}
+           />
+        ) : regImg.test(contentType) ? (
+          <img src={downloadURL} style={img} />
+        ) : (
+          "nieobslugiwany typ..."
+        )}
+      </div>
          
-        ))
-     }
+      </div>
+     
+     )}
+</aside>
+    </section>
 
-{/* </CardColumns> */}
       </UncontrolledCollapse>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { firestore,storage,auth } from "../base.js";
+import { firestore, storage, auth } from "../base.js";
 import { useEffect, useCollectionData } from "react";
 // import { retrieveDownloadUrl } from "../base.js";
 
@@ -7,23 +7,18 @@ import { AuthContext, AuthProvider } from "../Authorization/Auth.js";
 
 export const FireDataContext = React.createContext();
 
-const retrieveDownloadUrl  =  async(url) => {
-  const storageRef = storage.ref();
+const storageRef = storage.ref();
+
+const retrieveDownloadUrl = async (url) => {
   const fileRef = storageRef.child(url);
-  return await fileRef.getDownloadURL();
-}
+  let contentType;
+  await fileRef.getMetadata().then((result)=>contentType=result.contentType);
+  const downloadURL = await fileRef.getDownloadURL();
+  return {contentType: contentType, downloadURL:downloadURL }
+};
 
 export const FireDataProvider = ({ children }) => {
-  // const videosRef = firestore.collection("videos");
-  // const [videos] = useCollectionData(videosRef, { idField: "id" });
-
-  // const [videos, setVideos] = useState([]);
-  // const [AreVideosPending, setVideosPending] = useState(true);
-
   const { currentUser } = useContext(AuthContext);
-
-  // const [downloables, setDownloables] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
 
   const tasksRef = firestore.collection("tasks");
   const [tasks, setTasks] = useState([]);
@@ -38,107 +33,113 @@ export const FireDataProvider = ({ children }) => {
   const [classesPending, setClassesPending] = useState(true);
 
   function taskMedia(media, setDownloables, setDownloablesPending) {
-    
-    // const media = videos.filter()
-
-    // const currentResult = results.find((result) => result.id === resultId);
-    // alert(currentResult.id)
-
-
-
-
-    // media && console.log(media[0])
-
-    // media && console.log(retrieveDownloadUrl())
-
-    // resultsPending ? console.log("pending") : console.log(media)
-    // !resultsPending ? : {
-      
-    
-    //  for( let medium of media ){
-    //   !resultsPending & console.log(medium)
-    // }
-
-    // media.forEach((medium) => console.log(medium))
-
-    // media && media.map((medium)=> console.log(retrieveDownloadUrl(medium)));
-
-
-
-
     async function fetchDownloableURLs() {
       let downloables = [];
-      const promises = media.map(async ( url ) => { 
-        await retrieveDownloadUrl(url).then((result) => downloables.push(result));
+      const promises = media.map(async (url) => {
+        await retrieveDownloadUrl(url).then((result) =>{
+          downloables.push(result)
+        }
+          
+        );
       });
-      return  await Promise.all(promises).then(()=>setDownloables(downloables)).then(()=>setDownloablesPending(false))
-      // return downloables;
+      return await Promise.all(promises)
+        .then(() => setDownloables(downloables))
+        .then(() => setDownloablesPending(false));
     }
 
-    media && fetchDownloableURLs()
-    // return media.map((medium)=> console.log(medium));
-    // return ("cześć id: "+ id);
-
-    // alert(id);
+    media && fetchDownloableURLs();
   }
-
-
 
   function findTask(taskId) {
-    
-    // const media = videos.filter()
-    // alert(id);
-    
-    // const task = tasks.find((task) => task.id === taskId);
-    
-    
-    // alert(taskId +'\n'+ task.id);
     return tasks.find((task) => task.id === taskId);
-
-    // alert(id);
   }
 
 
-  // export const showFile  = (videos, setVideoFileURL) => {
-  //   videos.map(({url})=>console.log(url))
-  // }
-  
+  async function createResult(files, taskId) {
 
+    let mediaChildPaths = [];
 
+     async function uploadFile(file) {
+      const childPath = "Videos/" + file.name;
+      const fileRef = storageRef.child(childPath);
 
-  useEffect(() => {
-    // console.log("ro");
-    // async function fetchVideos() {
-    //   let documents = [];
-
-    //   const snapshot = await videosRef
-    //     // .where("student", "==", currentUser.uid)
-    //     .get();
-    //   if (snapshot.empty) {
-    //     console.log("No matching documents.");
-    //     return;
-    //   } else {
-    //     snapshot.forEach((doc) => {
-    //       documents.push({ id: doc.id, ...doc.data() });
-
-    //       Promise.all(documents)
-    //         .then(() => {
-    //           setVideos(documents);
-    //         })
-    //         .then(() => {
-    //          setVideosPending(false);
-    //         });
-    //     });
-    //     return documents;
-    //   }
+      // try {
+     await fileRef.put(file).then(() => {
+        mediaChildPaths.push(childPath);
+        console.log("Uploaded a file");
+      });
+    // } catch (error) {
+    //   alert(error);
     // }
 
-    // console.log(fetchVideos());
+    }
+
+    // async function uploadFiles(){
+      const promises = await files.map( (file) => uploadFile(file));
+      Promise.all(promises)
+      .then(() => {
+        resultsRef.add({
+          media: mediaChildPaths,
+          note: "",
+          comment: "",
+          status: "finished",
+          student:currentUser.email,
+          task: taskId,
+          updated: new Date(),
+        }).then(()=>console.log("added result"))
+
+        //  registerFiles();
+      })
+      // return mediaChildPaths;
+    // }
+
+
+//     async function registerFiles() {
+//       try {
+// await 
+        // resultsRef.add({
+        //   media: mediaChildPaths,
+        //   note: "",
+        //   comment: "",
+        //   status: "finished",
+        //   student:currentUser.email,
+        //   task: taskId,
+        //   updated: new Date(),
+        // }).then(()=>console.log("added result"))
+
+
+      // } catch (error) {
+      //   alert(error);
+      // }
 
 
     
 
-  }, []);
+
+      // await videosRef
+      //   .add({
+      //     url: childPath,
+      //     user: "user123",
+      //   })
+      //   .then(() => console.log("Registry updated"));
+    
+      // await fileRef.getDownloadURL().then((result) => {
+      //   setVideoFileURL(result);
+      // });
+    // }
+    // registerFiles();
+    // uploadFiles()
+    
+    
+  }
+
+  function updateResult(){
+    
+  }
+
+
+
+  
 
 
   useEffect(() => {
@@ -196,7 +197,7 @@ export const FireDataProvider = ({ children }) => {
       let documents = [];
 
       const snapshot = await classesRef
-  
+
         .where("students", "array-contains", currentUser.email)
         .get();
 
@@ -221,9 +222,7 @@ export const FireDataProvider = ({ children }) => {
     fetchTasks();
     fetchResults();
     fetchClasses();
-
   }, []);
-
 
   return (
     <FireDataContext.Provider
@@ -239,9 +238,10 @@ export const FireDataProvider = ({ children }) => {
         classesRef,
         classes,
         classesPending,
-        
+
         findTask,
-        taskMedia
+        taskMedia,
+        createResult,
       }}
     >
       {children}

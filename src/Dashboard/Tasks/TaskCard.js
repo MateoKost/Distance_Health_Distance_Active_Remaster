@@ -73,7 +73,7 @@ const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
         </CardText>
 
         <CardText>
-          <Uploader cardId={id} />
+          <Uploader cardId={id} task={id}/>
         </CardText>
       </CardBody>
     </Card>
