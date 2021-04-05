@@ -86,17 +86,12 @@ const updateDate = new Date(updated.toDate().toISOString()).toLocaleDateString("
           <DetailsExpand id={id} notes={notes} />
         </CardText>
         <CardText>
-          <ResultSent media={media}/>
-
-
-          Result sent
-
-
+          <ResultSent id={id} media={media}/>
           {/* data modyfikacji */}
 {/* pliki */}
         </CardText>
         <CardText>
-          <Uploader cardId={id} task={task}/>
+          <Uploader cardId={id} task={task} uploadMethod={null}/>
         </CardText>
       </CardBody>
     </Card>

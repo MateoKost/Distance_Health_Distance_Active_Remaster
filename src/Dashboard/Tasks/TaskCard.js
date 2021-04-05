@@ -32,7 +32,7 @@ const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
   const isoDate = end.toDate().toISOString();
   const d = new Date(isoDate).toLocaleDateString("en-GB");
 
-  const { taskMedia } = useContext(FireDataContext);
+  const { taskMedia, createResult } = useContext(FireDataContext);
 
   return (
     <Card key={id}>
@@ -73,7 +73,7 @@ const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
         </CardText>
 
         <CardText>
-          <Uploader cardId={id} task={id}/>
+          <Uploader cardId={id} task={id} uploadMethod={createResult}/>
         </CardText>
       </CardBody>
     </Card>

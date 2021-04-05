@@ -20,6 +20,8 @@ import TaskCard from "./Tasks/TaskCard";
 import ResultCard from "./Tasks/ResultCard";
 import ResultSent from "./Tasks/ResultSent.js";
 
+import LoadingModal from "./Tasks/LoadingModal";
+
 function Viewer(props) {
   // const usersRef = firestore.collection("users");
   // const [users] = useCollectionData(usersRef, { idField: "id" });
@@ -55,6 +57,8 @@ function Viewer(props) {
         label="Oddane zadania"
         tasks={{ pending:resultsPending, tasks:results.map(ResultCard) }}
       />
+
+<LoadingModal/>
 
       {/* <Tasks
         state={false}

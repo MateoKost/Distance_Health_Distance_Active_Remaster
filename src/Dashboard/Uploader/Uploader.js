@@ -18,9 +18,9 @@ import { FireDataContext } from "../../Authorization/FireDataContext";
 import ItemIconNames from "../../Utilities/IconNames";
 // import SpinnerGroup from '../../Utilities/SpinnerGroup';
 
-function Uploader(props) {
-  const [videoFile, setVideoFile] = useState([]);
-  const [videoOK, setVideoOK] = useState(false);
+function Uploader({cardId, task, uploadMethod}) {
+  const [files, setFiles] = useState([]);
+  const [filesOk, setFilesOK] = useState(false);
   // const [videoFileURL, setVideoFileURL] = useState([]);
 
   const { createResult } = useContext(FireDataContext);
@@ -34,33 +34,38 @@ function Uploader(props) {
   //       file: file,
   //     });
   //   }
-  //   setVideoOK(true);
-  //   setVideoFile(outcome)
+  //   setFilesOK(true);
+  //   setFiles(outcome)
   // };
 
   // const enterFile = (file) => {
 
     // useEffect(() => {
 
-    //   videoFile[0] !==null && setVideoOK(true)
-    //   // videoFile && setVideoOK(true)
+    //   files[0] !==null && setFilesOK(true)
+    //   // files && setFilesOK(true)
   
   
-    // }, [setVideoFile]);
+    // }, [setFiles]);
 
   //   // uploadFile(file, setVideoFileURL);
   // };
 
   const handleEnterUpload = () => {
-    videoFile && createResult(videoFile, props.task)
-    // for (let file of videoFile) {
+    // console.log("handleEnterUpload");
+    // console.log(files);
+    // console.log(task);
+    // console.log(cardId);
+    // files && uploadMethod(files, task, cardId)
+    files && createResult(files, task)
+    // for (let file of files) {
     //   console.log(file);
     //   uploadFile(file);
     // }
   };
   
 
-  const cardId=`toggler-${props.cardId}`
+  const toggleId=`toggler-${cardId}`
 
   const icon = ItemIconNames.find((item) => item.name === "add");
 
@@ -69,11 +74,11 @@ function Uploader(props) {
       {/* <h2>Prześlij plik</h2> */}
       {/* {/* {file.type === "image/.*"} */}
 
-      {/* <Button onClick={()=>setVideoOK(true)} >Abcd</Button> */}
+      {/* <Button onClick={()=>setFilesOK(true)} >Abcd</Button> */}
 
       {/* <input type="file" id="file" multiple onChange={handleVideoUpload}/> */}
 
-      <Button id={cardId} size="lg" block>
+      <Button id={toggleId} size="lg" block>
 
 
        {icon ? icon.faIcon : <FontAwesomeIcon icon={faChair} />} {" "}
@@ -81,26 +86,26 @@ function Uploader(props) {
         {/* <FontAwesomeIcon icon={faLongArrowAltUp} className="fa-lg" /> */}
         Dodaj wyniki
       </Button>
-      <UncontrolledCollapse toggler={"#"+cardId}>
+      <UncontrolledCollapse toggler={"#"+toggleId}>
         <Card>
           {/* <CardHeader>Prześlij plik</CardHeader> */}
 
           <CardBody>
             {/* <CardTitle tag="h5">Special Title Treatment</CardTitle> */}
             <CardText>
-              <DragAndDrop setFiles={setVideoFile} setVideoOK={setVideoOK}/>
+              <DragAndDrop setFiles={setFiles} setFilesOK={setFilesOK}/>
             </CardText>
 
             <Button
               color="info"
               onClick={handleEnterUpload}
-              disabled={!videoOK}
+              disabled={!filesOk}
             >
               Prześlij
             </Button>
 
 
-            {/* {videoOK ? (            <Button
+            {/* {filesOk ? (            <Button
               color="info"
               onClick={handleEnterUpload}
    
@@ -122,8 +127,8 @@ function Uploader(props) {
       </UncontrolledCollapse>
 
       {/* 
-      {videoOK &&
-        videoFile.map((file) => (
+      {filesOk &&
+        files.map((file) => (
           <ReactPlayer
             url={file.url}
             width="40%"
