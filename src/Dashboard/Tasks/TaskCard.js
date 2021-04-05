@@ -38,7 +38,6 @@ const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
     <Card key={id}>
       <CardBody>
         <CardTitle tag="h5">{name}</CardTitle>
-        {/* <CardSubtitle tag="h6" className="mb-2 text-muted"></CardSubtitle> */}
         <Row>
           <Col lg="4" className="text-center">
             <span className="fa-5x ">

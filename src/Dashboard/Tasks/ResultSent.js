@@ -38,7 +38,6 @@ const ResultSent = ({id,media}) => {
 
   return (
     <div>
-      <p>Data modyfikacji</p>
       <Button id={cardId} size="lg" block>
         {downIcon.faIcon}
         Przesłane wyniki

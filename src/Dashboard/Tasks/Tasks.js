@@ -1,8 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import ItemIconNames from "../../Utilities/IconNames";
 import SpinnerGroup from "../../Utilities/SpinnerGroup";
 
-import { CardColumns, Button, Collapse } from "reactstrap";
+import { CardColumns, Button, Collapse} from "reactstrap";
+
+import "./Task.css";
 
 const Tasks = (props) => {
   const [isOpen, setIsOpen] = useState(props.state);
@@ -13,15 +15,13 @@ const Tasks = (props) => {
   return (
     <div>
       <Button onClick={toggle} className="text-left" size="lg" block>
+      <span class="expander">
         {isOpen ? (
           downIcon.faIcon
-        ) : (
-          <span>
-            {"   "}
-            {rightIcon.faIcon}
-            {"   "}{" "}
-          </span>
-        )}{" "}
+        ) : 
+            rightIcon.faIcon
+        }
+         </span>
         {props.label}
       </Button>
       <Collapse isOpen={isOpen}>

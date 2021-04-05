@@ -7,9 +7,13 @@ const DetailsExpand = (props) => {
 
   return (
     <div>
-      <Button id={cardId} size="lg" block>
-        {downIcon.faIcon}
+      <Button id={cardId} outline color="secondary" className="text-left" size="lg" block >
+      <span class="text-left">
+      <span class="expander">
+      {downIcon.faIcon}
+      </span>
         Szczegóły
+        </span>
       </Button>
       <UncontrolledCollapse toggler={"#" + cardId}>
         <Table>

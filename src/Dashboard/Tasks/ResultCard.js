@@ -42,10 +42,10 @@ const icon = ItemIconNames.find((item) => item.name === type);
 const calendarIcon = ItemIconNames.find((item) => item.name === "calendar");
 const coachIcon = ItemIconNames.find((item) => item.name === "coach");
 //   const isoDate = end.toDate().toDateString();
-const isoDate = end.toDate().toISOString();
-const d = new Date(isoDate).toLocaleDateString("en-GB");
 
+const endDate = new Date(end.toDate().toISOString()).toLocaleDateString("en-GB");
 const updateDate = new Date(updated.toDate().toISOString()).toLocaleDateString("en-GB");
+const updateHour = new Date(updated.toDate().toISOString()).toTimeString().substr(0,5);
 
 
   return (
@@ -76,7 +76,7 @@ const updateDate = new Date(updated.toDate().toISOString()).toLocaleDateString("
                   <th className="text-center" scope="row">
                     {calendarIcon.faIcon}
                   </th>
-                  <td>{d}</td>
+                  <td>{endDate}</td>
                 </tr>
               </tbody>
             </Table>
@@ -86,6 +86,7 @@ const updateDate = new Date(updated.toDate().toISOString()).toLocaleDateString("
           <DetailsExpand id={id} notes={notes} />
         </CardText>
         <CardText>
+        <p className="text-left">Data modyfikacji: {updateDate } {updateHour}</p>
           <ResultSent id={id} media={media}/>
           {/* data modyfikacji */}
 {/* pliki */}
