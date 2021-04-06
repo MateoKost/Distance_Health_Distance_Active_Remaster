@@ -29,7 +29,7 @@ const ResultSent = ({ id, media }) => {
 
   return (
     <div>
-      <Button id={cardId} size="lg" block outline>
+      <Button id={cardId}  block outline>
         {downIcon.faIcon}
         Przesłane wyniki
       </Button>

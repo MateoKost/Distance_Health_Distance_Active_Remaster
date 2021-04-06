@@ -23,7 +23,7 @@ function Uploader({ cardId, task, uploadMethod }) {
 
   return (
     <div>
-      <Button id={toggleId} size="lg" block onClick={()=>toggleUploaderModal(true)} color="danger" className="orange">
+      <Button id={toggleId}  block onClick={()=>toggleUploaderModal(true)} color="danger" className="orange">
         {icon ? icon.faIcon : <FontAwesomeIcon icon={faChair} />} Dodaj wyniki
       </Button>
       <Modal isOpen={uploaderModal} >

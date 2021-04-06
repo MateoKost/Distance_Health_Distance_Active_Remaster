@@ -35,6 +35,8 @@ export const FireDataProvider = ({ children }) => {
   const [classes, setClasses] = useState([]);
   const [classesPending, setClassesPending] = useState(true);
 
+  const [alertVisibility, setAlertVisibility] = useState(false);
+  
   function taskMedia(media, setDownloables, setDownloablesPending) {
     async function fetchDownloableURLs() {
       let downloables = [];
@@ -251,9 +253,10 @@ export const FireDataProvider = ({ children }) => {
         updateResult,
 
         isResultModalActive,
-        isResultSent
+        isResultSent,
 
-       
+        setAlertVisibility,
+        alertVisibility
       }}
     >
       {children}

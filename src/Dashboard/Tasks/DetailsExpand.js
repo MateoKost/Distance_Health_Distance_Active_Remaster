@@ -7,7 +7,7 @@ const DetailsExpand = (props) => {
 
   return (
     <div>
-      <Button id={cardId} outline color="secondary" className="text-left" size="lg" block >
+      <Button id={cardId} outline color="secondary" className="text-left" block >
       <span class="text-left">
       <span class="expander">
       {downIcon.faIcon}

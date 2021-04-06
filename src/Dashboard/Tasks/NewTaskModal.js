@@ -11,17 +11,13 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  UncontrolledAlert
+  UncontrolledAlert,
 } from "reactstrap";
 
 import ItemIconNames from "../../Utilities/IconNames";
 // import SpinnerGroup from '../../Utilities/SpinnerGroup';
 
-import React, {
-  useState,
-  useCallback,
-  useContext,
-} from "react";
+import React, { useState, useCallback, useContext } from "react";
 
 import { AuthContext } from "../../Authorization/Auth.js";
 import { FireDataContext } from "../../Authorization/FireDataContext";
@@ -36,7 +32,7 @@ const categories = [
 
 const NewTaskModal = (props, { history }) => {
   const { currentUser } = useContext(AuthContext);
-  const { tasksRef, classes } = useContext(FireDataContext);
+  const { tasksRef, classes, setAlertVisibility } = useContext(FireDataContext);
 
   const handleSubmit = useCallback(
     async (event) => {
@@ -70,8 +66,8 @@ const NewTaskModal = (props, { history }) => {
             status: "pending",
           })
           .then((result) => {
-            if(result.id!==null){
-              setAlertVisibility(true); 
+            if (result.id !== null) {
+              setAlertVisibility(true);
               setNewTaskModal(false);
             }
           });
@@ -84,26 +80,20 @@ const NewTaskModal = (props, { history }) => {
   );
 
   const [newTaskModal, setNewTaskModal] = useState(false);
-  const [alertVisibility, setAlertVisibility] = useState(false);
+  // const [alertVisibility, setAlertVisibility] = useState(false);
 
   const addIcon = ItemIconNames.find((item) => item.name === "add");
 
   return (
-    <div>
-  
-{alertVisibility && (
-    
-        <UncontrolledAlert color="success">
-              <b>Dodano zadanie</b>
-        </UncontrolledAlert> ) }
+    <div >
 
 
-      <Button
-        color="primary"
-        className="btn-circle"
+      <Button 
+                      color="danger" className="orange"
+
         onClick={() => setNewTaskModal(true)}
       >
-        <span className="fa-3x"> {addIcon.faIcon} </span>
+       {addIcon.faIcon} Dodaj zadanie
       </Button>
 
       <Modal isOpen={newTaskModal} toggle={() => setNewTaskModal(false)}>
@@ -125,8 +115,7 @@ const NewTaskModal = (props, { history }) => {
                 // required
               >
                 <option>I7B2S1</option>
-                {classes &&
-                  classes.map(({ name }) => <option>{name}</option>)}
+                {classes && classes.map(({ name }) => <option>{name}</option>)}
               </Input>
             </FormGroup>
 
@@ -199,7 +188,7 @@ const NewTaskModal = (props, { history }) => {
             </Table>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" type="submit">
+            <Button    color="danger" className="orange" type="submit">
               Dodaj
             </Button>{" "}
             <Button color="secondary" onClick={() => setNewTaskModal(false)}>

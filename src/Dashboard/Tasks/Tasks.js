@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ItemIconNames from "../../Utilities/IconNames";
 import SpinnerGroup from "../../Utilities/SpinnerGroup";
-import { CardColumns, Button, Collapse} from "reactstrap";
+import { CardColumns, Button, Collapse } from "reactstrap";
 import "./Task.css";
 
 const Tasks = (props) => {
@@ -12,7 +12,7 @@ const Tasks = (props) => {
 
   return (
     <div>
-      <Button onClick={toggle} className="text-left" size="lg" block>
+      <Button onClick={toggle} outline className="text-left"  block> 
       <span class="expander">
         {isOpen ? (
           downIcon.faIcon

@@ -8,11 +8,12 @@ import {
   faChalkboardTeacher,
   faChevronDown,
   faChevronRight,
-
   faFootballBall,
   faSwimmer,
   faBiking,
-
+faTrash,
+faPen,
+faStar
 
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -28,6 +29,9 @@ const ItemIconNames = [
   { name: "add", faIcon: <FontAwesomeIcon icon={faPlus} /> },
   { name: "down", faIcon: <FontAwesomeIcon icon={faChevronDown} /> },
   { name: "right", faIcon: <FontAwesomeIcon icon={faChevronRight} /> },
+  { name: "delete", faIcon: <FontAwesomeIcon icon={faTrash} /> },
+  { name: "edit", faIcon: <FontAwesomeIcon icon={faPen} /> },
+  { name: "star", faIcon: <FontAwesomeIcon icon={faStar} /> },
 ];
 
 export default ItemIconNames;

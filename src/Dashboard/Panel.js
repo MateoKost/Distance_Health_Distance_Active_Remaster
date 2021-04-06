@@ -12,6 +12,10 @@ import TaskCard from "./Tasks/TaskCard";
 import ResultCard from "./Tasks/ResultCard";
 import LoadingModal from "./Tasks/LoadingModal";
 
+import { AuthContext } from "../Authorization/Auth";
+
+import NMAction from "./NavMenu/NMAction";
+
 function Viewer() {
   const {
     classesPending,
@@ -21,10 +25,15 @@ function Viewer() {
     resultsPending,
   } = useContext(FireDataContext);
 
+  const { allowCoach, allowStudent } = useContext(AuthContext);
+
   return (
     <div>
       <NMLoggedIn />
-      {classesPending ? "" : <NewTaskModal />}
+      {/* { !rolePending && console.log(currentRole.coach)} */}
+      <NMAction title="Zadania" actions={ classesPending && ( allowCoach &&  <NewTaskModal />)}/>
+
+     
 
       <Tasks
         state={true}

@@ -1,22 +1,20 @@
 .expander {
-    width: 20px ;
-    margin-right: 5px;
-    display: inline-block;
+  width: 20px;
+  margin-right: 5px;
+  display: inline-block;
 }
 
 .orange {
-    background-color: #FF6600 !important; 
-    color: white !important; 
+  background-color: #ff6600 !important;
+  color: white !important;
+}
 
-  }
-  
-  .orange:hover {
-    background-color: #ED5F00 !important;
-    color: white !important; 
-  }
+.orange:hover {
+  background-color: #ed5f00 !important;
+  color: white !important;
+}
 
-
-  .gridCenter{
-    display: grid;
-    place-items: center;
-  }
+.gridCenter {
+  display: grid;
+  place-items: center;
+}

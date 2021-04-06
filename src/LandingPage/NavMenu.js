@@ -19,21 +19,27 @@ import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 
 import { ModalContext } from "./ModalContext";
 
-import React, { useContext } from "react";
+import React, { useContext,useState } from "react";
 
 const NavMenu = (props) => {
   const { toggleSignInModal } = useContext(ModalContext);
+  const dhda_banner = process.env.PUBLIC_URL + '/Assets/banner_ultra_alpha.svg';
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
 
   return (
     <div>
       <Navbar className="navbar-dark bg-dark" expand="md">
         {/* <img  className="logo" src={eszef}  alt={"Eszef"} /> */}
-        <NavbarBrand href="/">#DistanceHealthDistanceActive</NavbarBrand>
+        <NavbarBrand href="/"><img  className="dhda" src={dhda_banner} alt={"DHDA"} /> </NavbarBrand> 
+        {/* <NavbarBrand href="/">#DistanceHealthDistanceActive</NavbarBrand> */}
         <NavbarToggler
-        // onClick={toggle}
+        onClick={toggle}
         />
         <Collapse
-          // isOpen={isOpen}
+          isOpen={isOpen}
           navbar
         >
           <Nav className="mr-auto" navbar>
@@ -45,17 +51,7 @@ const NavMenu = (props) => {
                 GitHub
               </NavLink>
             </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Options
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>Option 1</DropdownItem>
-                <DropdownItem>Option 2</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>Reset</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+
           </Nav>
 
           <NMButton

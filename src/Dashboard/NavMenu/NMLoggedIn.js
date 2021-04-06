@@ -23,6 +23,7 @@ import {
   faUsers
 } from "@fortawesome/free-solid-svg-icons";
 
+import react, {useState} from "react";
 
 import { auth } from "../../base";
 
@@ -38,6 +39,9 @@ const dhda_banner = process.env.PUBLIC_URL + '/Assets/banner_ultra_alpha.svg';
 
 const NavMenu = () => {
   const history = useHistory();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
 
   return (
     <div>
@@ -45,10 +49,10 @@ const NavMenu = () => {
     <NavbarBrand href="/"><img  className="dhda" src={dhda_banner} alt={"DHDA"} /> </NavbarBrand> 
         {/* <NavbarBrand href="/"><img  className="dhda" src={dhda} alt={"DHDA"} /> <span className="ml-2">Distance Health Distance Active</span></NavbarBrand> */}
         <NavbarToggler
-        // onClick={toggle}
+        onClick={toggle}
         />
         <Collapse
-          // isOpen={isOpen}
+          isOpen={isOpen}
           navbar
         >
           <Nav className="mr-auto" navbar>
@@ -59,24 +63,24 @@ const NavMenu = () => {
             </NavItem>
           </Nav>
 
-          <NMButton
+          <NMButton disabled={true}
             onClick={() => console.log("Grupy")}
             icon={faUsers}
             label="Grupy"
           />
 
-                      <NMButton
+                      <NMButton disabled={true}
             onClick={() => console.log("Zadania")}
             icon={faClipboardList}
             label="Zadania"
           />
-          <NMButton
+          <NMButton disabled={true}
             onClick={() => console.log("Profil")}
             icon={faUser}
             label="Profil"
           />
 
-          <NMButton
+          <NMButton disabled={false}
             onClick={() => auth.signOut()}
             icon={faSignOutAlt}
             label="Wyloguj się"
@@ -88,7 +92,7 @@ const NavMenu = () => {
   );
 };
 
-const NMButton = ({ onClick, icon, label }) => {
+const NMButton = ({ onClick, icon, label, disabled }) => {
 
   const btnStyle = {
     minWidth: "100px",
@@ -96,7 +100,7 @@ const NMButton = ({ onClick, icon, label }) => {
   }
 
   return (
-    <Button color="dark" style={btnStyle} onClick={onClick}>
+    <Button color="dark" style={btnStyle} onClick={onClick} disabled={disabled}>
       <div>
         <FontAwesomeIcon icon={icon} className="fa-lg" />
       </div>

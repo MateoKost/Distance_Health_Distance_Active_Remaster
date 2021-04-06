@@ -6,7 +6,8 @@ import {
   CardBody,
   Row,
   Col,
-  Table,
+  Button,
+  Table,CardHeader,
 } from "reactstrap";
 
 import Uploader from "../Uploader/Uploader.js";
@@ -19,6 +20,8 @@ import ResultSent from "./ResultSent";
 
 import { FireDataContext } from "../../Authorization/FireDataContext";
 
+import { AuthContext } from "../../Authorization/Auth.js";
+
 const ResultCard = ({
   id,
   comment,
@@ -29,13 +32,16 @@ const ResultCard = ({
   task,
   updated,
 }) => {
-  const { taskMedia, findTask, updateResult } = useContext(FireDataContext);
+  const { taskMedia, findTask, updateResult, createResult } = useContext(
+    FireDataContext
+  );
 
   const { coach, name, type, start, end, notes } = findTask(task);
 
   const icon = ItemIconNames.find((item) => item.name === type);
   const calendarIcon = ItemIconNames.find((item) => item.name === "calendar");
   const coachIcon = ItemIconNames.find((item) => item.name === "coach");
+  const starIcon = ItemIconNames.find((item) => item.name === "star");
 
   const endDate = new Date(end.toDate().toISOString()).toLocaleDateString(
     "en-GB"
@@ -47,8 +53,11 @@ const ResultCard = ({
     .toTimeString()
     .substr(0, 5);
 
+  const { allowStudent, allowCoach } = useContext(AuthContext);
+
   return (
     <Card key={id}>
+
       <CardBody>
         <CardTitle tag="h5">{name}</CardTitle>
         <Row>
@@ -88,9 +97,11 @@ const ResultCard = ({
             Data modyfikacji: {updateDate} {updateHour}
           </p>
           <ResultSent id={id} media={media} />
-        </CardText>
-        <CardText>
-          <Uploader cardId={id} task={task} uploadMethod={updateResult} />
+
+                    {allowStudent() && (
+             <Uploader cardId={id} task={task} uploadMethod={updateResult} />
+          )}
+          {allowCoach() && ( <Button color="danger" className="orange" disabled block >{starIcon.faIcon} Oceń</Button> ) }
         </CardText>
       </CardBody>
     </Card>

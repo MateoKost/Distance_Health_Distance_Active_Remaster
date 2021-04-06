@@ -27,5 +27,12 @@
       bottom:1.5vh;
       display:block;  
       width:100%;
-   background-color: white;
+
+}
+
+
+.dhda{
+    /* width: 40px; */
+    height: 40px;
+    object-fit: scale-down;
 }
