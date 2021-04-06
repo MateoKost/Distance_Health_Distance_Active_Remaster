@@ -29,10 +29,10 @@ const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
   const calendarIcon = ItemIconNames.find((item) => item.name === "calendar");
   const coachIcon = ItemIconNames.find((item) => item.name === "coach");
   //   const isoDate = end.toDate().toDateString();
-  const isoDate = end.toDate().toISOString();
-  const d = new Date(isoDate).toLocaleDateString("en-GB");
-
-  const { taskMedia, createResult } = useContext(FireDataContext);
+  const endDate = new Date(end.toDate().toISOString()).toLocaleDateString(
+    "en-GB"
+  );
+  const { createResult } = useContext(FireDataContext);
 
   return (
     <Card key={id}>
@@ -61,7 +61,7 @@ const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
                   <th className="text-center" scope="row">
                     {calendarIcon.faIcon}
                   </th>
-                  <td>{d}</td>
+                  <td>{endDate}</td>
                 </tr>
               </tbody>
             </Table>

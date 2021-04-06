@@ -1,13 +1,22 @@
-.btn-circle {
- 
-    /* padding: 6px 0px; */
-    border-radius: 70px;
-    /* font-size: 8px; */
-    /* text-align: center; */
-}
-
 .expander {
     width: 20px ;
     margin-right: 5px;
     display: inline-block;
 }
+
+.orange {
+    background-color: #FF6600 !important; 
+    color: white !important; 
+
+  }
+  
+  .orange:hover {
+    background-color: #ED5F00 !important;
+    color: white !important; 
+  }
+
+
+  .gridCenter{
+    display: grid;
+    place-items: center;
+  }

@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from "react";
+import React, { useContext } from "react";
 import {
   Card,
   CardTitle,
@@ -17,42 +17,40 @@ import { faTshirt } from "@fortawesome/free-solid-svg-icons";
 import DetailsExpand from "./DetailsExpand";
 import ResultSent from "./ResultSent";
 
-
 import { FireDataContext } from "../../Authorization/FireDataContext";
-import { FireDataProvider } from "../../Authorization/FireDataContext";
 
-import { Button } from "bootstrap";
+const ResultCard = ({
+  id,
+  comment,
+  media,
+  note,
+  status,
+  student,
+  task,
+  updated,
+}) => {
+  const { taskMedia, findTask, updateResult } = useContext(FireDataContext);
 
+  const { coach, name, type, start, end, notes } = findTask(task);
 
-// import TaskCard from "./Tasks/TaskCard";
+  const icon = ItemIconNames.find((item) => item.name === type);
+  const calendarIcon = ItemIconNames.find((item) => item.name === "calendar");
+  const coachIcon = ItemIconNames.find((item) => item.name === "coach");
 
-const ResultCard = ({ id, comment, media, note, status, student, task, updated  }) => {
-
-
-  const { taskMedia, findTask } = useContext(FireDataContext);
-
-
-  
-
-const { coach, name, type, start, end, notes } = findTask(task);
-
-// const task = findTask();
-
-const icon = ItemIconNames.find((item) => item.name === type);
-const calendarIcon = ItemIconNames.find((item) => item.name === "calendar");
-const coachIcon = ItemIconNames.find((item) => item.name === "coach");
-//   const isoDate = end.toDate().toDateString();
-
-const endDate = new Date(end.toDate().toISOString()).toLocaleDateString("en-GB");
-const updateDate = new Date(updated.toDate().toISOString()).toLocaleDateString("en-GB");
-const updateHour = new Date(updated.toDate().toISOString()).toTimeString().substr(0,5);
-
+  const endDate = new Date(end.toDate().toISOString()).toLocaleDateString(
+    "en-GB"
+  );
+  const updateDate = new Date(
+    updated.toDate().toISOString()
+  ).toLocaleDateString("en-GB");
+  const updateHour = new Date(updated.toDate().toISOString())
+    .toTimeString()
+    .substr(0, 5);
 
   return (
     <Card key={id}>
       <CardBody>
         <CardTitle tag="h5">{name}</CardTitle>
-        {/* <CardSubtitle tag="h6" className="mb-2 text-muted"></CardSubtitle> */}
         <Row>
           <Col lg="4" className="text-center">
             <span className="fa-5x ">
@@ -86,13 +84,13 @@ const updateHour = new Date(updated.toDate().toISOString()).toTimeString().subst
           <DetailsExpand id={id} notes={notes} />
         </CardText>
         <CardText>
-        <p className="text-left">Data modyfikacji: {updateDate } {updateHour}</p>
-          <ResultSent id={id} media={media}/>
-          {/* data modyfikacji */}
-{/* pliki */}
+          <p className="text-left">
+            Data modyfikacji: {updateDate} {updateHour}
+          </p>
+          <ResultSent id={id} media={media} />
         </CardText>
         <CardText>
-          <Uploader cardId={id} task={task} uploadMethod={null}/>
+          <Uploader cardId={id} task={task} uploadMethod={updateResult} />
         </CardText>
       </CardBody>
     </Card>

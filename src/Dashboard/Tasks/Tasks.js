@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import ItemIconNames from "../../Utilities/IconNames";
 import SpinnerGroup from "../../Utilities/SpinnerGroup";
-
 import { CardColumns, Button, Collapse} from "reactstrap";
-
 import "./Task.css";
 
 const Tasks = (props) => {

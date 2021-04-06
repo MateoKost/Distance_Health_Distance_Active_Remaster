@@ -1,9 +1,7 @@
 import React, { useState, useContext } from "react";
-import { firestore, storage, auth } from "../base.js";
-import { useEffect, useCollectionData } from "react";
-// import { retrieveDownloadUrl } from "../base.js";
-
-import { AuthContext, AuthProvider } from "../Authorization/Auth.js";
+import { firestore, storage } from "../base.js";
+import { useEffect} from "react";
+import { AuthContext } from "../Authorization/Auth.js";
 
 export const FireDataContext = React.createContext();
 
@@ -32,9 +30,6 @@ export const FireDataProvider = ({ children }) => {
 
   const [isResultModalActive, setResultModalActive] = useState(false);
   const [isResultSent , setResultSent ] = useState(false);
-
-  
-
 
   const classesRef = firestore.collection("classes");
   const [classes, setClasses] = useState([]);
@@ -105,86 +100,53 @@ export const FireDataProvider = ({ children }) => {
 
   }
 
-  //   async function updateResult(files, taskId, resultId) {
+  async function updateResult(files, taskId, cardId) {
+    // console.log("createResult");
+    // console.log(files);
+    // console.log(taskId);
 
-  //     let mediaChildPaths = [];
+    setResultModalActive(true);
 
-  //      async function uploadFile(file) {
-  //       const childPath = "Videos/" + file.name;
-  //       const fileRef = storageRef.child(childPath);
+    let mediaChildPaths = [];
 
-  //       // try {
-  //      await fileRef.put(file).then(() => {
-  //         mediaChildPaths.push(childPath);
-  //         console.log("Uploaded a file");
-  //       });
-  //     // } catch (error) {
-  //     //   alert(error);
-  //     // }
+    async function uploadFile(file) {
 
-  //     }
+      const childPath = "Videos/" + file.name;
+      const fileRef = storageRef.child(childPath);
 
-  //     // async function uploadFiles(){
-  //       const promises = await files.map( (file) => uploadFile(file));
-  //       Promise.all(promises)
-  //       .then(() => {
-  //         return resultsRef.doc(resultId).get({
-  //           media: mediaChildPaths,
-  //           note: "",
-  //           comment: "",
-  //           status: "finished",
-  //           student:currentUser.email,
-  //           task: taskId,
-  //           updated: new Date(),
-  //         }).then(()=>console.log("got result:" + resultId))
+      try {
+        console.log("uploadFile");
+      await  fileRef.put(file).then(() => {
+       
+        mediaChildPaths.push(childPath);
+        console.log("Uploaded a file");
+      });
+      } catch (error) {
+        alert(error);
+      }
+    }
 
-  //         //  registerFiles();
-  //       }).then((result)=>{console.log(result)
-  //         // resultsRef.doc(resultId).set({
-  //         //   media: mediaChildPaths,
-  //         //   note: "",
-  //         //   comment: "",
-  //         //   status: "finished",
-  //         //   student:currentUser.email,
-  //         //   task: taskId,
-  //         //   updated: new Date(),
-  //         // }).then(()=>console.log("added result"))
-  //       })
-  //       // return mediaChildPaths;
-  //     // }
+    let oldResult;
+    try{
+      await resultsRef.doc(cardId).get().then((doc)=> oldResult = { id: doc.id, ...doc.data() } );
+    } catch(error) {
+      alert(error);
+    }
 
-  // //     async function registerFiles() {
-  // //       try {
-  // // await
-  //         // resultsRef.add({
-  //         //   media: mediaChildPaths,
-  //         //   note: "",
-  //         //   comment: "",
-  //         //   status: "finished",
-  //         //   student:currentUser.email,
-  //         //   task: taskId,
-  //         //   updated: new Date(),
-  //         // }).then(()=>console.log("added result"))
 
-  //       // } catch (error) {
-  //       //   alert(error);
-  //       // }
 
-  //       // await videosRef
-  //       //   .add({
-  //       //     url: childPath,
-  //       //     user: "user123",
-  //       //   })
-  //       //   .then(() => console.log("Registry updated"));
+    const promises = await files.map((file) => uploadFile(file));
 
-  //       // await fileRef.getDownloadURL().then((result) => {
-  //       //   setVideoFileURL(result);
-  //       // });
-  //     // }
-  //     // registerFiles();
-  //     // uploadFiles()
+    Promise.all(promises).then(() => {
+      console.log("promise");
+      resultsRef.doc(cardId).set({
+        media: [...oldResult.media, ...mediaChildPaths],
+        updated: new Date(),
+      }, { merge: true }).then(() => {console.log("updated result"); setResultSent(true);setResultModalActive(false)});
+    });
 
-  //   }
+  }
+
 
   useEffect(() => {
     async function fetchTasks() {
@@ -286,11 +248,12 @@ export const FireDataProvider = ({ children }) => {
         findTask,
         taskMedia,
         createResult,
+        updateResult,
 
         isResultModalActive,
         isResultSent
 
-        // updateResult,
+       
       }}
     >
       {children}
