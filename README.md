@@ -4,7 +4,7 @@ Mateusz Kostrzewski
 April 7, 2021
 
 #### Firebase Hosting App: [clickable demo](https://frbflsexample2.web.app/)
-#### Video: [demo](https://github.com/MateoKost/AppDemos/blob/main/React/dhda.mp4)
+#### YT Video: [#DistanceHealthDistanceActive​ demo](https://www.youtube.com/watch?v=DoeahaN01TE)
 #### Banner: [dhda banner](https://www.deviantart.com/matheok/art/DistanceHealthDistanceActive-875603983)
 
 ### Usage
