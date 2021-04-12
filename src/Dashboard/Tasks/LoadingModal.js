@@ -1,26 +1,16 @@
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "reactstrap";
-import {
-  React,
-  useContext,
-} from "react";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { React, useContext } from "react";
 import { withRouter } from "react-router";
 import { FireDataContext } from "../../Authorization/FireDataContext";
 import SpinnerGroup from "../../Utilities/SpinnerGroup";
 import "./Task.css";
+import "../../App.css";
+
 const LoadingModal = () => {
   const { isResultModalActive, isResultSent } = useContext(FireDataContext);
 
-  if (isResultSent) {
-    console.log("patrzę czy isResultSent - " + isResultSent);
-    window.location.reload();
-  }
-
+  isResultSent && window.location.reload();
+  
   return (
     <div>
       <Modal isOpen={isResultModalActive}>

@@ -3,6 +3,7 @@ import ItemIconNames from "../../Utilities/IconNames";
 import SpinnerGroup from "../../Utilities/SpinnerGroup";
 import { CardColumns, Button, Collapse } from "reactstrap";
 import "./Task.css";
+import "../../App.css"
 
 const Tasks = (props) => {
   const [isOpen, setIsOpen] = useState(props.state);

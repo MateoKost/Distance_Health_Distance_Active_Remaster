@@ -57,6 +57,25 @@ export const FireDataProvider = ({ children }) => {
     return tasks.find((task) => task.id === taskId);
   }
 
+
+async function createTask(data, setNewTaskModal){
+  try {
+    tasksRef
+      .add({  ...data,  coach: currentUser.email,
+      })
+      .then((result) => {
+        if (result.id !== null) {
+          setAlertVisibility(true);
+          setNewTaskModal(false);
+        }
+      });
+    // history.push("/");
+  } catch (error) {
+    alert(error);
+  }
+}
+
+
   async function createResult(files, taskId) {
     // console.log("createResult");
     // console.log(files);
@@ -248,6 +267,7 @@ export const FireDataProvider = ({ children }) => {
         classesPending,
 
         findTask,
+        createTask,
         taskMedia,
         createResult,
         updateResult,

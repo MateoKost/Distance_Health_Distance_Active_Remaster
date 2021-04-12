@@ -7,19 +7,15 @@ import {
   Row,
   Col,
   Button,
-  Table,CardHeader,
+  Table,
 } from "reactstrap";
-
-import Uploader from "../Uploader/Uploader.js";
-import ItemIconNames from "../../Utilities/IconNames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTshirt } from "@fortawesome/free-solid-svg-icons";
-
+import ItemIconNames from "../../Utilities/IconNames";
+import Uploader from "../Uploader/Uploader.js";
 import DetailsExpand from "./DetailsExpand";
 import ResultSent from "./ResultSent";
-
 import { FireDataContext } from "../../Authorization/FireDataContext";
-
 import { AuthContext } from "../../Authorization/Auth.js";
 
 const ResultCard = ({
@@ -32,9 +28,7 @@ const ResultCard = ({
   task,
   updated,
 }) => {
-  const { taskMedia, findTask, updateResult, createResult } = useContext(
-    FireDataContext
-  );
+  const { findTask, updateResult } = useContext(FireDataContext);
 
   const { coach, name, type, start, end, notes } = findTask(task);
 
@@ -57,7 +51,6 @@ const ResultCard = ({
 
   return (
     <Card key={id}>
-
       <CardBody>
         <CardTitle tag="h5">{name}</CardTitle>
         <Row>
@@ -98,10 +91,14 @@ const ResultCard = ({
           </p>
           <ResultSent id={id} media={media} />
 
-                    {allowStudent() && (
-             <Uploader cardId={id} task={task} uploadMethod={updateResult} />
+          {allowStudent() && (
+            <Uploader cardId={id} task={task} uploadMethod={updateResult} />
           )}
-          {allowCoach() && ( <Button color="danger" className="orange" disabled block >{starIcon.faIcon} Oceń</Button> ) }
+          {allowCoach() && (
+            <Button color="danger" className="orange" disabled block>
+              {starIcon.faIcon} Oceń
+            </Button>
+          )}
         </CardText>
       </CardBody>
     </Card>

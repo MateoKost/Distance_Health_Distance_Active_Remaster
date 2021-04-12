@@ -1,3 +1,4 @@
+import React, { useState, useContext } from "react";
 import {
   Label,
   Form,
@@ -11,15 +12,8 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  UncontrolledAlert,
 } from "reactstrap";
-
 import ItemIconNames from "../../Utilities/IconNames";
-// import SpinnerGroup from '../../Utilities/SpinnerGroup';
-
-import React, { useState, useCallback, useContext } from "react";
-
-import { AuthContext } from "../../Authorization/Auth.js";
 import { FireDataContext } from "../../Authorization/FireDataContext";
 
 const categories = [
@@ -30,70 +24,48 @@ const categories = [
   { name: "Siłownia", category: "gym" },
 ];
 
-const NewTaskModal = (props, { history }) => {
-  const { currentUser } = useContext(AuthContext);
-  const { tasksRef, classes, setAlertVisibility } = useContext(FireDataContext);
+const NewTaskModal = () => {
+  const { classes, createTask } = useContext(FireDataContext);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const {
+      multiGroup,
+      name,
+      category,
+      endDate,
+      endH,
+      n_B,
+      n_C,
+      n_D,
+    } = event.target.elements;
+    const categoryName = categories.find(
+      (item) => item.name === category.value
+    );
 
-  const handleSubmit = useCallback(
-    async (event) => {
-      event.preventDefault();
-      const {
-        multiGroup,
-        name,
-        category,
-        endDate,
-        endH,
-        n_B,
-        n_C,
-        n_D,
-      } = event.target.elements;
-      try {
-        const categoryName = categories.find(
-          (item) => item.name === category.value
-        );
-        tasksRef
-          .add({
-            coach: currentUser.email,
-            name: name.value,
-            classes: Array.from(
-              multiGroup.selectedOptions,
-              (option) => option.value
-            ),
-            type: categoryName.category,
-            end: new Date(`${endDate.value} ${endH.value}`),
-            start: new Date(),
-            notes: { B: n_B.value, C: n_C.value, D: n_D.value },
-            status: "pending",
-          })
-          .then((result) => {
-            if (result.id !== null) {
-              setAlertVisibility(true);
-              setNewTaskModal(false);
-            }
-          });
-        // history.push("/");
-      } catch (error) {
-        alert(error);
-      }
-    },
-    [history]
-  );
+    const data = {
+      name: name.value,
+      classes: Array.from(multiGroup.selectedOptions, (option) => option.value),
+      type: categoryName.category,
+      end: new Date(`${endDate.value} ${endH.value}`),
+      start: new Date(),
+      notes: { B: n_B.value, C: n_C.value, D: n_D.value },
+      status: "pending",
+    };
+
+    createTask(data, setNewTaskModal);
+  };
 
   const [newTaskModal, setNewTaskModal] = useState(false);
-  // const [alertVisibility, setAlertVisibility] = useState(false);
-
   const addIcon = ItemIconNames.find((item) => item.name === "add");
 
   return (
-    <div >
-
-
-      <Button 
-                      color="danger" className="orange"
-
+    <div>
+      <Button
+        color="danger"
+        className="orange"
         onClick={() => setNewTaskModal(true)}
       >
-       {addIcon.faIcon} Dodaj zadanie
+        {addIcon.faIcon} Dodaj zadanie
       </Button>
 
       <Modal isOpen={newTaskModal} toggle={() => setNewTaskModal(false)}>
@@ -112,7 +84,7 @@ const NewTaskModal = (props, { history }) => {
                 name="multiGroup"
                 id="multiGroup"
                 multiple
-                // required
+                required
               >
                 <option>I7B2S1</option>
                 {classes && classes.map(({ name }) => <option>{name}</option>)}
@@ -188,7 +160,7 @@ const NewTaskModal = (props, { history }) => {
             </Table>
           </ModalBody>
           <ModalFooter>
-            <Button    color="danger" className="orange" type="submit">
+            <Button color="danger" className="orange" type="submit">
               Dodaj
             </Button>{" "}
             <Button color="secondary" onClick={() => setNewTaskModal(false)}>

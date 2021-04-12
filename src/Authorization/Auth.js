@@ -1,8 +1,7 @@
-import React, { useEffect, useState,useCollectionData } from "react";
-import { firestore,auth } from "../base.js";
+import React, { useEffect, useState  } from "react";
+import { firestore,auth, firebase_auth } from "../base.js";
 import SpinnerGroup from "../Utilities/SpinnerGroup";
 import "../Utilities/Spinner.css"
-
 
 // import { useCollectionData } from "react-firebase-hooks/firestore";
 
@@ -12,16 +11,9 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentRole, setCurrentRole] = useState({admin: false, coach:false, student:false});
   const [rolePending, setRolePending] = useState(true);
-
-
   const [pending, setPending] = useState(true);
-  // const [userFireData, setUserFireData] = useState(null);
 
   const usersRef = firestore.collection("users");
-
-  // const getTimestamp = () => {
-  //   firestore.FieldValue.serverTimestamp()
-  // }
 
   function allowCoach(){
     return !rolePending && currentRole.coach;
@@ -32,11 +24,10 @@ export const AuthProvider = ({ children }) => {
     return !rolePending && currentRole.student;
   }
 
-  useEffect(() => {
 
+
+  useEffect(() => {
     async function getRole(id) {
-      // alert('role for :' +id)
-      // let role;
       await usersRef.doc(id).get().then((doc)=>setCurrentRole(doc.data().role)).then(()=>setRolePending(false))
     }
 
@@ -48,15 +39,49 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
 
       }
-      // user.uid !== null && getRole(user.uid)
-      // setCurrentRole(  )
-      // user.uid !== null && alert(user.uid);
       setPending(false);
-
     });
   }, []);
 
 
+  async function signInWithGoogle(){
+    try {
+      const provider = new firebase_auth.GoogleAuthProvider();
+      await auth.signInWithPopup(provider);
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  async function signInWithEmailAndPassword({ email, password }){
+    try {
+      await auth
+        .signInWithEmailAndPassword(email.value, password.value);
+      // history.push("/");
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+
+  async function createUserWithEmailAndPassword({ email, password, coach }){
+    try {
+      await auth
+        .createUserWithEmailAndPassword(email.value, password.value)
+        .then((result) => {
+          usersRef.doc(result.user.uid).set({
+            role: {
+              admin: false,
+              coach: coach.checked,
+              student: !coach.checked,
+            },
+            screenName: result.user.email,
+          });
+        });
+    } catch (error) {
+      alert(error);
+    }
+  }
 
   if (pending) {
     return <span className="gridCenter"><SpinnerGroup/></span>;
@@ -68,8 +93,10 @@ export const AuthProvider = ({ children }) => {
         currentUser,
         allowCoach,
         allowStudent,
-        // currentRole,
-        // rolePending
+
+        signInWithGoogle,
+        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword
       }}
     >
       {children}
@@ -77,11 +104,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-
-// export const signInWithGoogle = () => {
-//   const provider = new auth.GoogleAuthProvider();
-//   auth.signInWithPopup(provider);
-// };
 
 // export const signOut = () => {
 //   auth.signOut();

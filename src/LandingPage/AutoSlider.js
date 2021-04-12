@@ -32,7 +32,7 @@ const items = [
   }
 ];
 
-const AutoSlider = (props) => {
+const AutoSlider = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
 

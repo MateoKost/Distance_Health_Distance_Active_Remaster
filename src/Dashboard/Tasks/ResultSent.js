@@ -1,3 +1,4 @@
+import React, { useState, useContext, useEffect } from "react";
 import {
   Button,
   UncontrolledCollapse,
@@ -5,9 +6,9 @@ import {
 import ItemIconNames from "../../Utilities/IconNames";
 import { FireDataContext } from "../../Authorization/FireDataContext";
 import ReactPlayer from "react-player";
-import React, { useState, useContext, useEffect } from "react";
 import { thumbsContainer, thumb, thumbInner, img } from "../Uploader/Style";
 import "./Task.css";
+import "../../App.css"
 
 const regVideo = new RegExp("^(video/.*)$");
 const regImg = new RegExp("^(image/.*)$");

@@ -1,30 +1,22 @@
 import React, { useContext } from "react";
 import { Button } from "reactstrap";
-import "./LP.css";
-import NavMenu from "./NavMenu";
 import AutoSlider from "./AutoSlider";
-import SignInModal from "../Authorization/SignInModal";
-import RegisterModal from "../Authorization/RegisterModal";
-import RegisterInfoModal from "../Authorization/RegisterInfoModal";
-import { ModalProvider } from "./ModalContext";
-import { ModalContext } from "./ModalContext";
+import SignInModal from "../Modals/SignInModal";
+import RegisterModal from "../Modals/RegisterModal";
+import { ModalContext } from "../Modals/ModalContext";
+import "./LP.css";
 
 const LandingPage = () => {
   return (
     <div>
-      <ModalProvider>
-        <NavMenu />
         <AutoSlider />
-        <footer class="footer">
+        <footer className="gridCenter mt-lg-3">
           <RegisterButton />
         </footer>
         <SignInModal />
         <RegisterModal />
-        <RegisterInfoModal />
-      </ModalProvider>
     </div>
   );
-  // }
 };
 
 export default LandingPage;
@@ -35,7 +27,7 @@ const RegisterButton = () => {
   return (
     <Button
       color="dark"
-      className="p-4"
+      className="p-4 mt-1"
       onClick={() => {
         toggleRegisterModal();
       }}

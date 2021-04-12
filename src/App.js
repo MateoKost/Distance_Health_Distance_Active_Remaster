@@ -18,27 +18,27 @@ import "./App.css";
 
 import { FireDataProvider } from "./Authorization/FireDataContext";
 import { FireDataContext } from "./Authorization/FireDataContext";
+import NavMenu from "./NavMenu/NavMenu";
 
+import { ModalProvider } from "./Modals/ModalContext";
 
 function App() {
 
   return (
-    <div className="App conta">
+    <div className="container-fluid p-0" >
       <AuthProvider>
         <Router>
           <div>
+          <ModalProvider>
+            <NavMenu/>
             <Route exact path="/" component={LandingPage} />
+          </ModalProvider>
             <PrivateRoute
               exact
               path="/dashboard"
               component={() => (
                 <FireDataProvider>
-                <Viewer
-                  // downloables={downloables}
-                  // isLoading={isLoading}
-                  // setDownloables={setDownloables}
-                  // setIsLoading={setIsLoading}
-                />
+                <Viewer/>
                 </FireDataProvider>
               )}
             />
