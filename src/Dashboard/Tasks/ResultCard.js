@@ -15,7 +15,7 @@ import ItemIconNames from "../../Utilities/IconNames";
 import Uploader from "../Uploader/Uploader.js";
 import DetailsExpand from "./DetailsExpand";
 import ResultSent from "./ResultSent";
-import { FireDataContext } from "../../Authorization/FireDataContext";
+import { FireDataContext } from "../../FireData/FireDataContext";
 import { AuthContext } from "../../Authorization/Auth.js";
 
 const ResultCard = ({

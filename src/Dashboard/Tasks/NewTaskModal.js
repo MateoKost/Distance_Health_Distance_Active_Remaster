@@ -14,7 +14,7 @@ import {
   ModalFooter,
 } from "reactstrap";
 import ItemIconNames from "../../Utilities/IconNames";
-import { FireDataContext } from "../../Authorization/FireDataContext";
+import { FireDataContext } from "../../FireData/FireDataContext";
 
 const categories = [
   { name: "Bieganie", category: "running" },

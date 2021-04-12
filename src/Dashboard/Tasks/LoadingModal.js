@@ -1,7 +1,7 @@
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { React, useContext } from "react";
 import { withRouter } from "react-router";
-import { FireDataContext } from "../../Authorization/FireDataContext";
+import { FireDataContext } from "../../FireData/FireDataContext";
 import SpinnerGroup from "../../Utilities/SpinnerGroup";
 import "./Task.css";
 import "../../App.css";

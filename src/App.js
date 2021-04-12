@@ -16,8 +16,8 @@ import LandingPage from "./LandingPage/LandingPage";
 
 import "./App.css";
 
-import { FireDataProvider } from "./Authorization/FireDataContext";
-import { FireDataContext } from "./Authorization/FireDataContext";
+import { FireDataProvider } from "./FireData/FireDataContext";
+import { FireDataContext } from "./FireData/FireDataContext";
 import NavMenu from "./NavMenu/NavMenu";
 
 import { ModalProvider } from "./Modals/ModalContext";
