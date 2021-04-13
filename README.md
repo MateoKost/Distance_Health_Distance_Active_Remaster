@@ -3,16 +3,15 @@
 Mateusz Kostrzewski
 April 7, 2021
 
-#### Firebase Hosting App: [clickable demo](https://frbflsexample2.web.app/)
-#### YT Video: [#DistanceHealthDistanceActive​ demo](https://www.youtube.com/watch?v=DoeahaN01TE)
-#### Banner: [dhda banner](https://www.deviantart.com/matheok/art/DistanceHealthDistanceActive-875603983)
+<b>Firebase Hosting App: </b> [clickable demo](https://frbflsexample2.web.app/)</br>
+<b>YT Video:</b>  [#DistanceHealthDistanceActive​ demo](https://www.youtube.com/watch?v=DoeahaN01TE)</br>
+<b>Banner:</b>  [dhda banner](https://www.deviantart.com/matheok/art/DistanceHealthDistanceActive-875603983)
 
 ### Usage
 
 Coach account:
 trener1@email.com
-trener12345
-
+trener12345</br>
 Student account:
 student1@email.com
 Student12345
@@ -30,3 +29,6 @@ Original version uses .NET & MongoDB.
 [CarbonRK](https://github.com/CarbonRK)
 [patryklorbiecki1](https://github.com/patryklorbiecki1)
 [ZurawS](https://github.com/ZurawS)
+
+### Tags
+create-react-app, SPA, RWD, React Context API, Firebase
