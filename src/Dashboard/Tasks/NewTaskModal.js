@@ -15,6 +15,7 @@ import {
 } from "reactstrap";
 import ItemIconNames from "../../Utilities/IconNames";
 import { FireDataContext } from "../../FireData/FireDataContext";
+import { TasksContext } from "../../FireData/TasksContext";
 
 const categories = [
   { name: "Bieganie", category: "running" },
@@ -25,7 +26,8 @@ const categories = [
 ];
 
 const NewTaskModal = () => {
-  const { classes, createTask } = useContext(FireDataContext);
+  const { classes } = useContext(FireDataContext);
+  const { createTask } = useContext(TasksContext);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const {

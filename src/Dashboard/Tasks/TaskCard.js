@@ -8,19 +8,13 @@ import {
   Col,
   Table,CardHeader,Button 
 } from "reactstrap";
-
 import Uploader from "../Uploader/Uploader.js";
 import ItemIconNames from "../../Utilities/IconNames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTshirt } from "@fortawesome/free-solid-svg-icons";
-
 import DetailsExpand from "./DetailsExpand";
-import ResultSent from "./ResultSent";
-
-import { FireDataContext } from "../../FireData/FireDataContext";
 import { AuthContext } from "../../Authorization/Auth.js";
-
-
+import { ResultsContext } from "../../FireData/ResultsContext";
 
 const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
   const icon = ItemIconNames.find((item) => item.name === type);
@@ -29,12 +23,11 @@ const TaskCard = ({ id, coach, name, type, status, start, end, notes }) => {
 
   const editIcon = ItemIconNames.find((item) => item.name === "edit");
   const deleteIcon = ItemIconNames.find((item) => item.name === "delete");
-
-  //   const isoDate = end.toDate().toDateString();
+  
   const endDate = new Date(end.toDate().toISOString()).toLocaleDateString(
     "en-GB"
   );
-  const { createResult } = useContext(FireDataContext);
+  const { createResult } = useContext(ResultsContext);
   const { allowStudent, allowCoach } = useContext(AuthContext);
 
   return (

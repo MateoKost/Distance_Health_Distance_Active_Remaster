@@ -15,7 +15,9 @@ import ItemIconNames from "../../Utilities/IconNames";
 import Uploader from "../Uploader/Uploader.js";
 import DetailsExpand from "./DetailsExpand";
 import ResultSent from "./ResultSent";
-import { FireDataContext } from "../../FireData/FireDataContext";
+// import { FireDataContext } from "../../FireData/FireDataContext";
+import { ResultsContext } from "../../FireData/ResultsContext";
+import { TasksContext } from "../../FireData/TasksContext";
 import { AuthContext } from "../../Authorization/Auth.js";
 
 const ResultCard = ({
@@ -28,7 +30,8 @@ const ResultCard = ({
   task,
   updated,
 }) => {
-  const { findTask, updateResult } = useContext(FireDataContext);
+  const { updateResult } = useContext(ResultsContext);
+  const { findTask } = useContext(TasksContext);
 
   const { coach, name, type, start, end, notes } = findTask(task);
 
