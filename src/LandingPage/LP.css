@@ -4,35 +4,15 @@
     object-fit:cover;
 }
 
-
 .LPSliderCaption h3{
     font-size: 4rem;
 }
-
 
 .LPSliderCaption p{
     font-size: 2rem;
 }
 
-
 .ke{
-
     color: white;
     text-shadow: 1px 1px 2px black, 0 0 25px black, 0 0 5px black;
-}
-
-
-/* .footer {
-    position:absolute;
-      bottom:1.5vh;
-      display:block;  
-      width:100%;
-
-} */
-
-
-.dhda{
-    /* width: 40px; */
-    height: 40px;
-    object-fit: scale-down;
 }
