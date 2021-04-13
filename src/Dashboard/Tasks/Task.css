@@ -4,17 +4,4 @@
   display: inline-block;
 }
 
-.orange {
-  background-color: #ff6600 !important;
-  color: white !important;
-}
 
-.orange:hover {
-  background-color: #ed5f00 !important;
-  color: white !important;
-}
-
-.gridCenter {
-  display: grid;
-  place-items: center;
-}
